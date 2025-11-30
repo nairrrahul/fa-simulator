@@ -1,0 +1,30 @@
+{
+  "0": {
+    "name": "FIFA",
+    "continent": "World"
+  },
+  "1": {
+    "name": "AFC",
+    "continent": "Asia"
+  },
+  "2": {
+    "name": "CAF",
+    "continent": "Africa"
+  },
+  "3": {
+    "name": "UEFA",
+    "continent": "Europe"
+  }, 
+  "4": {
+    "name": "CONCACAF",
+    "continent": "North America"
+  }, 
+  "5": {
+    "name": "CONMEBOL",
+    "continent": "South America"
+  }, 
+  "6": {
+    "name": "OFC",
+    "continent": "Oceania"
+  }
+}

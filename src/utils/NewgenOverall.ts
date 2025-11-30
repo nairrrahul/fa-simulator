@@ -1,7 +1,7 @@
 import { gauss, truncatedNormal, uniform } from "./RandomGen";
 
 //generates CA and PA in range 1 - 200
-export function generateNewgenOvrPot(youthRating: number, age: number) {
+export function generateNewgenOvrPot(youthRating: number, age: number, isCrucialImportance: boolean) {
   //range checks
 
   const AGE_PERCENT = {
@@ -23,7 +23,7 @@ export function generateNewgenOvrPot(youthRating: number, age: number) {
   if(Math.random() < chanceOutlier) {
     PARaw = meanPA + uniform(25, 45) + gauss(0, stddevPA * 0.6);
   } else {
-    PARaw = truncatedNormal(meanPA, stddevPA, 1.0, 200.0);
+    PARaw = truncatedNormal(!isCrucialImportance ? meanPA : meanPA + 10, stddevPA, 1.0, 200.0);
   }
 
   const POTENTIAL = Math.round(Math.max(1, Math.min(200, PARaw)));

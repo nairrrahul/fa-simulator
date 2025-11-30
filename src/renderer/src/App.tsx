@@ -16,8 +16,8 @@ function App(): React.JSX.Element {
   });
 
   const generateOnClick = () => {
-    setCurPotAbs(generateNewgenOvrPot(135, 16));
-    setNameInfo(realisticNameGenerator("USA"));
+    setCurPotAbs(generateNewgenOvrPot(165, 17, true));
+    setNameInfo(realisticNameGenerator("BRA"));
   };
 
   return (
