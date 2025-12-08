@@ -33,7 +33,7 @@ export default function Sidebar(): JSX.Element {
       <SidebarSection
         items={[
           { label: "Player Search", icon: <MagnifyingGlassIcon className="w-5 h-5" /> },
-          { label: "Nation Search", icon: <FlagIcon className="w-5 h-5" /> },
+          { label: "Nation Search", icon: <FlagIcon className="w-5 h-5" />, path: "/nation-search" },
         ]}
       />
 

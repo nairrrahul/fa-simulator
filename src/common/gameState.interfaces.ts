@@ -10,3 +10,30 @@ export interface Nation {
   primaryColor: string;
   secondaryColor: string;
 }
+
+export interface Fixture {
+  id: number;
+  team1ID: number | null;
+  team2ID: number | null;
+  groupID: number;
+  roundID: number;
+  date: string | null;
+  result: string | null;
+}
+
+export interface KOMapping {
+  matchID: number;
+  team1MatchID: number | null;
+  team2MatchID: number | null;
+  isLoser: boolean;
+}
+
+export interface Competition {
+  ID: number;
+  name: string;
+  confederationID: number;
+  curCycle: number;
+  periodicity: number;
+  competitionType: number;
+  hostPrevCycles: number;
+}

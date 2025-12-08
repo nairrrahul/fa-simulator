@@ -1,8 +1,9 @@
 import fCode from '../../../data/flag_codes.json'  with { type: 'json' };
 const FLAG_CODES = fCode as Record<string, string>;
 
-export default function FlagCard({countryName}) {
+export default function FlagCard({countryName, cssClasses}) {
 
+  const cssClassesList = cssClasses.split(":");
 
   const getFlagCode = (threeLetterCode: string) => {
     return threeLetterCode in FLAG_CODES ? FLAG_CODES[threeLetterCode] : 'xx';
@@ -17,11 +18,11 @@ export default function FlagCard({countryName}) {
           src={new URL(`../assets/flags/${primaryFlagCode}.svg`, import.meta.url).href}
           alt={countryName}
           title={countryName}
-          className="w-12 h-8 object-cover"
+          className={cssClassesList[0]}
         />
       ) : (
         <span
-          className={`fi fi-${primaryFlagCode} text-3xl`}
+          className={`fi fi-${primaryFlagCode} ${cssClassesList[1]}`}
           title={countryName}
         >
         </span>

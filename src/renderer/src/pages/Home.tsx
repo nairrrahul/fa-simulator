@@ -9,7 +9,7 @@ export default function Home(): JSX.Element {
     <div className="text-white text-3xl">
       Home Screen
     </div>
-    <FlagCard countryName={flagName} />
+    <FlagCard countryName={flagName} cssClasses={"w-12 h-8 object-cover:text-3xl"} />
   </div>
   );
 }

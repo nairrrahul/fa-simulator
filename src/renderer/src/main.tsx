@@ -6,6 +6,8 @@ import Layout from './components/layout/Layout'
 import Home from './pages/Home'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import RankingsPage from './pages/RankingsPage'
+import NationSearchPage from './pages/NationSearchPage'
+import NationOverviewPage from './pages/NationOverviewPage'
 
 
 createRoot(document.getElementById('root')!).render(
@@ -15,6 +17,8 @@ createRoot(document.getElementById('root')!).render(
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/rankings" element={<RankingsPage />} />
+          <Route path="/nation-search" element={<NationSearchPage />} />
+          <Route path="/nation/:nationId" element={<NationOverviewPage />} />
         </Routes>
       </Layout>
     </BrowserRouter>

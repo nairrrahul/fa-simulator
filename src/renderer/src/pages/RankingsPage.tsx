@@ -95,6 +95,7 @@ export default function RankingsPage(): JSX.Element {
               <RankRow 
                 key={nation.id}
                 rank={nation.absoluteRank}
+                nationId={nation.id}
                 name={nation.name}
                 abbrev={nation.abbrev}
                 confederationID={nation.confederationID}
