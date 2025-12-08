@@ -152,7 +152,7 @@ export default function NationFixturesPage(): JSX.Element {
             <ChevronLeftIcon className="w-5 h-5" />
           </button>
           <span className="text-gray-100 font-medium min-w-[100px] text-center">
-            Season {selectedYear}/{(selectedYear + 1).toString().slice(-2)}
+            {selectedYear}
           </span>
           <button
             onClick={() => setSelectedYear(prev => prev + 1)}
