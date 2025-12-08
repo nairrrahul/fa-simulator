@@ -70,7 +70,8 @@ function generateBracketFills(
         roundID: currentRound,
         competitionID: competitionID,
         date: null,
-        result: null
+        scoreline: null,
+        outcome: null
       });
       firstRoundMatches.push(currentMatchID);
       currentMatchID++;
@@ -125,7 +126,8 @@ function generateBracketFills(
         roundID: currentRound,
         competitionID: competitionID,
         date: null,
-        result: null
+        scoreline: null,
+        outcome: null
       });
       
       knockoutMatchMappings.push({
@@ -158,7 +160,8 @@ function generateBracketFills(
         roundID: currentRound - 1, // Same round as final
         competitionID: competitionID,
         date: null,
-        result: null
+        scoreline: null,
+        outcome: null
       });
       
       knockoutMatchMappings.push({

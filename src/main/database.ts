@@ -28,18 +28,20 @@ export function loadGameData() {
   const nations = db.prepare('SELECT * FROM NATIONS').all();
   const fixtures = db.prepare('SELECT * FROM FIXTURES').all();
   const knockoutMappings = db.prepare('SELECT * FROM KNOCKOUTMAPPING').all();
+  const competitions = db.prepare('SELECT * FROM COMPETITIONS').all();
   
   return {
     nations,
     fixtures,
-    knockoutMappings
+    knockoutMappings,
+    competitions
   };
 }
 
 export function saveGameData(data: { 
   nations: any[], 
   fixtures: any[],
-  knockoutMappings: any[]
+  knockoutMappings: any[],
 }) {
   if (!db) throw new Error('Database not initialized');
   

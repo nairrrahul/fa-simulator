@@ -1,4 +1,5 @@
 import { JSX } from "react";
+import { useNavigate } from "react-router-dom";
 import { Fixture } from "src/common/gameState.interfaces";
 import { useGameStore } from "@renderer/state/gameStore";
 import FlagCard from "../FlagCard";
@@ -10,6 +11,7 @@ interface NextFixtureCardProps {
 }
 
 export default function NextFixtureCard({ fixture, currentNationId }: NextFixtureCardProps): JSX.Element {
+  const navigate = useNavigate();
   const { nations } = useGameStore();
 
   const getOpponentAbbrev = () => {
@@ -43,7 +45,10 @@ export default function NextFixtureCard({ fixture, currentNationId }: NextFixtur
         <h2 className="text-sm font-medium text-gray-400 uppercase tracking-wide">
           Next Match
         </h2>
-        <button className="flex items-center gap-1 text-sm text-blue-400 hover:text-blue-300 transition-colors">
+        <button 
+          onClick={() => navigate(`/nation/${currentNationId}/fixtures`)}
+          className="flex items-center gap-1 text-sm text-blue-400 hover:text-blue-300 transition-colors"
+        >
           <span>VIEW FIXTURES</span>
           <ChevronRightIcon className="w-4 h-4" />
         </button>

@@ -19,7 +19,18 @@ export interface Fixture {
   roundID: number;
   competitionID: number;
   date: string | null;
-  result: string | null;
+  scoreline: string | null;
+  outcome: number | null;
+}
+
+export interface Competition {
+  id: number;
+  name: string;
+  confederationID: number;
+  curCycle: number;
+  periodicity: number;
+  competitionType: number;
+  hostPrevCycles: number;
 }
 
 export interface KOMapping {

@@ -1,9 +1,10 @@
-import { Fixture, Nation, KOMapping } from 'src/common/gameState.interfaces';
+import { Fixture, Nation, KOMapping, Competition } from 'src/common/gameState.interfaces';
 import { create } from 'zustand';
 
 interface GameState {
   nations: Nation[];
   fixtures: Map<number, Fixture>; // Map by fixture ID for fast lookup
+  competitions: Map<number, Competition>;
   knockoutMappings: Map<number, KOMapping>; // Map by matchID
   isLoaded: boolean;
   
@@ -11,6 +12,7 @@ interface GameState {
   loadGameData: (data: { 
     nations: Nation[], 
     fixtures: Fixture[], 
+    competitions: Competition[],
     knockoutMappings: KOMapping[] 
   }) => void;
   updateNation: (id: number, updates: Partial<Nation>) => void;
@@ -29,16 +31,19 @@ export const useGameStore = create<GameState>((set, get) => ({
   nations: [],
   fixtures: new Map(),
   knockoutMappings: new Map(),
+  competitions: new Map(),
   isLoaded: false,
   
   loadGameData: (data) => {
     const fixturesMap = new Map(data.fixtures.map(f => [f.id, f]));
     const mappingsMap = new Map(data.knockoutMappings.map(m => [m.matchID, m]));
+    const competitionsMap = new Map(data.competitions.map(c => [c.id, c]))
     
     set({ 
       nations: data.nations,
       fixtures: fixturesMap,
       knockoutMappings: mappingsMap,
+      competitions: competitionsMap,
       isLoaded: true 
     });
   },
@@ -86,7 +91,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     return Array.from(get().fixtures.values())
       .filter(f => 
         (f.team1ID === nationId || f.team2ID === nationId) && 
-        f.result !== null
+        f.scoreline !== null
       );
   },
   
@@ -94,7 +99,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     return Array.from(get().fixtures.values())
       .filter(f => 
         (f.team1ID === nationId || f.team2ID === nationId) && 
-        f.result === null
+        f.scoreline === null
       );
   }
 }));
