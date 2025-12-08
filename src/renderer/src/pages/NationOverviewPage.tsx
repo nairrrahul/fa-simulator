@@ -14,7 +14,7 @@ const CONFEDERATIONS = confederationsData as Record<string, { name: string; cont
 export default function NationOverviewPage(): JSX.Element {
   const { nationId } = useParams<{ nationId: string }>();
   const navigate = useNavigate();
-  const { nations, getUpcomingFixturesByNation } = useGameStore();
+  const { nations, getUpcomingFixturesByNation, getCompetitionsByConfederation } = useGameStore();
 
   const nation = useMemo(() => {
     return nations.find(n => n.id === parseInt(nationId || "0"));
@@ -48,22 +48,8 @@ export default function NationOverviewPage(): JSX.Element {
   // Get competitions for confederation
   const confederationCompetitions = useMemo(() => {
     if (!nation) return [];
-    
-    const confId = nation.confederationID;
-    
-    // Map confederation to their competitions
-    const competitionsByConfederation: Record<number, string[]> = {
-      0: ["FIFA World Cup", "FIFA Confederations Cup"],
-      1: ["AFC Asian Cup", "AFC Asian Cup Qualifiers"],
-      2: ["Africa Cup of Nations", "AFCON Qualifiers"],
-      3: ["UEFA European Championship", "UEFA Nations League", "EURO Qualifiers"],
-      4: ["CONCACAF Gold Cup", "CONCACAF Nations League"],
-      5: ["Copa América", "CONMEBOL World Cup Qualifiers"],
-      6: ["OFC Nations Cup", "OFC Nations Cup Qualifiers"]
-    };
-    
-    return competitionsByConfederation[confId] || [];
-  }, [nation]);
+    return getCompetitionsByConfederation(nation.confederationID);
+  }, [nation, getCompetitionsByConfederation]);
 
   if (!nation) {
     return (

@@ -1,8 +1,9 @@
 import { JSX } from "react";
 import { TrophyIcon } from "@heroicons/react/24/outline";
+import { Competition } from "src/common/gameState.interfaces";
 
 interface CompetitionsCardProps {
-  competitions: string[];
+  competitions: Competition[];
 }
 
 export default function CompetitionsCard({ competitions }: CompetitionsCardProps): JSX.Element {
@@ -17,12 +18,12 @@ export default function CompetitionsCard({ competitions }: CompetitionsCardProps
       
       <div className="space-y-2">
         {competitions.length > 0 ? (
-          competitions.map((competition, idx) => (
+          competitions.map((competition) => (
             <button
-              key={idx}
+              key={competition.id}
               className="w-full text-left px-4 py-3 bg-[#1E1E25] hover:bg-[#2A2A35] border border-gray-700 rounded-lg transition-colors text-gray-200 text-sm font-medium"
             >
-              {competition}
+              {competition.name}
             </button>
           ))
         ) : (

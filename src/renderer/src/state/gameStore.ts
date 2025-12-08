@@ -25,6 +25,8 @@ interface GameState {
   getFixturesByNation: (nationId: number) => Fixture[];
   getCompletedFixturesByNation: (nationId: number) => Fixture[];
   getUpcomingFixturesByNation: (nationId: number) => Fixture[];
+  getCompetitionById: (competitionId: number) => Competition | undefined;
+  getCompetitionsByConfederation: (confederationId: number) => Competition[];
 }
 
 export const useGameStore = create<GameState>((set, get) => ({
@@ -101,5 +103,15 @@ export const useGameStore = create<GameState>((set, get) => ({
         (f.team1ID === nationId || f.team2ID === nationId) && 
         f.scoreline === null
       );
-  }
+  },
+
+  getCompetitionById: (competitionId) => {
+    return get().competitions.get(competitionId);
+  },
+  
+  getCompetitionsByConfederation: (confederationId) => {
+    return Array.from(get().competitions.values())
+      .filter(c => c.confederationID === confederationId);
+  },
+  
 }));

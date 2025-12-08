@@ -2,13 +2,13 @@ import { JSX, useMemo, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useGameStore } from "@renderer/state/gameStore";
 import { Fixture } from "src/common/gameState.interfaces";
-import FlagCard from "@renderer/components/FlagCard";
+import FixtureRow from "@renderer/components/FixtureRow";
 import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
 export default function NationFixturesPage(): JSX.Element {
   const { nationId } = useParams<{ nationId: string }>();
   const navigate = useNavigate();
-  const { nations, fixtures, competitions, getFixturesByNation } = useGameStore();
+  const { nations, fixtures, getFixturesByNation } = useGameStore();
   const [selectedYear, setSelectedYear] = useState(2026);
   const [sortAscending, setSortAscending] = useState(true);
 
@@ -78,18 +78,27 @@ export default function NationFixturesPage(): JSX.Element {
     return nations.find(n => n.id === opponentId);
   };
 
-  const getCompetitionById = (compID: number) => {
-    return [...competitions.values()].find(cmp => cmp.id == compID);
-  }
-
-  const getOutcomeColor = (outcome: number | null) => {
-    switch (outcome) {
-      case 0: return "bg-green-500"; // Win
-      case 1: return "bg-red-500";   // Loss
-      case 2: return "bg-gray-500";  // Draw
-      case 3: return "bg-orange-500"; // Penalty Loss
-      default: return "bg-transparent";
+  const getOutcomeForNation = (fixture: Fixture): number | null => {
+    if (!nation || fixture.outcome === null) return null;
+    
+    // If viewing nation is team1, outcome is as-is
+    if (fixture.team1ID === nation.id) {
+      return fixture.outcome;
     }
+    
+    // If viewing nation is team2, flip win/loss outcomes
+    if (fixture.team2ID === nation.id) {
+      switch (fixture.outcome) {
+        case 0: return 1; // Win becomes Loss
+        case 1: return 0; // Loss becomes Win
+        case 2: return 2; // Draw stays Draw
+        case 3: return 4; // Penalty Loss becomes Penalty Win
+        case 4: return 3; // Penalty Win becomes Penalty Loss
+        default: return fixture.outcome;
+      }
+    }
+    
+    return fixture.outcome;
   };
 
   const formatDate = (dateString: string) => {
@@ -124,9 +133,9 @@ export default function NationFixturesPage(): JSX.Element {
             <ArrowLeftIcon className="w-4 h-4" />
             <span>Back to Nation</span>
           </button>
-          <h2 className="text-3xl font-bold text-gray-100">
-            Fixtures
-          </h2>
+          <h1 className="text-3xl font-bold text-gray-100">
+            {nation.name} - Fixtures
+          </h1>
         </div>
 
         {/* Year Selector */}
@@ -143,7 +152,7 @@ export default function NationFixturesPage(): JSX.Element {
             <ChevronLeftIcon className="w-5 h-5" />
           </button>
           <span className="text-gray-100 font-medium min-w-[100px] text-center">
-            {selectedYear}
+            Season {selectedYear}/{(selectedYear + 1).toString().slice(-2)}
           </span>
           <button
             onClick={() => setSelectedYear(prev => prev + 1)}
@@ -189,48 +198,15 @@ export default function NationFixturesPage(): JSX.Element {
                 {/* Month Fixtures */}
                 {fixtures.map((fixture) => {
                   const opponent = getOpponent(fixture);
+                  const opponentCast = opponent == undefined ? null : opponent;
+                  const outcomeForNation = getOutcomeForNation(fixture);
                   return (
-                    <div
+                    <FixtureRow
                       key={fixture.id}
-                      className="grid grid-cols-[200px_1fr_150px_200px] gap-4 px-6 py-4 hover:bg-[#1A1A22] transition-colors border-b border-gray-800 last:border-b-0"
-                    >
-                      {/* Date */}
-                      <div className="text-gray-300 text-sm">
-                        {fixture.date && formatDate(fixture.date)}
-                      </div>
-
-                      {/* Opposition */}
-                      <div className="flex items-center gap-3">
-                        {opponent ? (
-                          <>
-                            <FlagCard
-                              countryName={opponent.abbrev}
-                              cssClasses="w-8 h-6 object-cover:text-2xl"
-                            />
-                            <span className="text-gray-200">{opponent.name}</span>
-                          </>
-                        ) : (
-                          <span className="text-gray-500">Unknown</span>
-                        )}
-                      </div>
-
-                      {/* Result */}
-                      <div className="flex items-center gap-2">
-                        {fixture.scoreline ? (
-                          <>
-                            <div className={`w-3 h-3 rounded-full ${getOutcomeColor(fixture.outcome)}`} />
-                            <span className="text-gray-200 font-medium">{fixture.scoreline}</span>
-                          </>
-                        ) : (
-                          <span className="text-gray-600">-</span>
-                        )}
-                      </div>
-
-                      {/* Competition */}
-                      <div className="text-gray-400 text-sm">
-                        {fixture.competitionID != null ? getCompetitionById(fixture.competitionID)!.name : "Friendly"}
-                      </div>
-                    </div>
+                      fixture={fixture}
+                      opponent={opponentCast}
+                      outcomeForNation={outcomeForNation}
+                    />
                   );
                 })}
               </div>
