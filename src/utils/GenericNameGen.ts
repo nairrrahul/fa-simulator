@@ -114,9 +114,4 @@ export function getRandomNationality(probabilities: Record<string, number>) {
   return undefined; // fallback (shouldn't happen if values > 0)
 }
 
-// for(let i = 0; i < 11; i++)
-// {
-//   console.log();
-//   realistic_name_generator("ENG");
-// }
   

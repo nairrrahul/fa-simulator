@@ -51,7 +51,7 @@ export function saveGameData(data: {
   
   const updateFixture = db.prepare(`
     UPDATE FIXTURES
-    SET team1ID = ?, team2ID = ?, result = ?, calculateddate = ?
+    SET team1ID = ?, team2ID = ?, result = ?, date = ?
     WHERE ID = ?
   `);
   

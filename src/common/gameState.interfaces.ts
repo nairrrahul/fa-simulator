@@ -17,6 +17,7 @@ export interface Fixture {
   team2ID: number | null;
   groupID: number;
   roundID: number;
+  competitionID: number;
   date: string | null;
   result: string | null;
 }
@@ -26,14 +27,4 @@ export interface KOMapping {
   team1MatchID: number | null;
   team2MatchID: number | null;
   isLoser: boolean;
-}
-
-export interface Competition {
-  ID: number;
-  name: string;
-  confederationID: number;
-  curCycle: number;
-  periodicity: number;
-  competitionType: number;
-  hostPrevCycles: number;
 }
