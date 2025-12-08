@@ -8,8 +8,8 @@ import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/rea
 export default function NationFixturesPage(): JSX.Element {
   const { nationId } = useParams<{ nationId: string }>();
   const navigate = useNavigate();
-  const { nations, fixtures, getFixturesByNation } = useGameStore();
-  const [selectedYear, setSelectedYear] = useState(2026);
+  const { nations, fixtures, gameDate, getFixturesByNation } = useGameStore();
+  const [selectedYear, setSelectedYear] = useState(gameDate.year);
   const [sortAscending, setSortAscending] = useState(true);
 
   const nation = useMemo(() => {
@@ -134,7 +134,7 @@ export default function NationFixturesPage(): JSX.Element {
             <span>Back to Nation</span>
           </button>
           <h1 className="text-3xl font-bold text-gray-100">
-            {nation.name} - Fixtures
+            Fixtures
           </h1>
         </div>
 

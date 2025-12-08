@@ -1,4 +1,4 @@
-import { Fixture, Nation, KOMapping, Competition } from 'src/common/gameState.interfaces';
+import { Fixture, Nation, KOMapping, Competition, GameDate } from 'src/common/gameState.interfaces';
 import { create } from 'zustand';
 
 interface GameState {
@@ -7,17 +7,20 @@ interface GameState {
   competitions: Map<number, Competition>;
   knockoutMappings: Map<number, KOMapping>; // Map by matchID
   isLoaded: boolean;
+  gameDate: GameDate;
   
   // Actions
   loadGameData: (data: { 
     nations: Nation[], 
     fixtures: Fixture[], 
     competitions: Competition[],
-    knockoutMappings: KOMapping[] 
+    knockoutMappings: KOMapping[],
+    gameStatus: GameDate 
   }) => void;
   updateNation: (id: number, updates: Partial<Nation>) => void;
   updateRankingPoints: (id: number, points: number) => void;
   updateFixture: (id: number, updates: Partial<Fixture>) => void;
+  updateGameDate: (date: GameDate) => void;
   clearGameData: () => void;
   
   // Helper getters
@@ -27,6 +30,7 @@ interface GameState {
   getUpcomingFixturesByNation: (nationId: number) => Fixture[];
   getCompetitionById: (competitionId: number) => Competition | undefined;
   getCompetitionsByConfederation: (confederationId: number) => Competition[];
+  getFormattedDate: () => string;
 }
 
 export const useGameStore = create<GameState>((set, get) => ({
@@ -34,6 +38,7 @@ export const useGameStore = create<GameState>((set, get) => ({
   fixtures: new Map(),
   knockoutMappings: new Map(),
   competitions: new Map(),
+  gameDate: { year: 2026, month: 1, day: 1 },
   isLoaded: false,
   
   loadGameData: (data) => {
@@ -71,10 +76,14 @@ export const useGameStore = create<GameState>((set, get) => ({
     return { fixtures: newFixtures };
   }),
   
+  updateGameDate: (date) => set({ gameDate: date }),
+  
   clearGameData: () => set({ 
     nations: [], 
     fixtures: new Map(),
     knockoutMappings: new Map(),
+    competitions: new Map(),
+    gameDate: { year: 2026, month: 1, day: 1 },
     isLoaded: false 
   }),
   
@@ -113,5 +122,14 @@ export const useGameStore = create<GameState>((set, get) => ({
     return Array.from(get().competitions.values())
       .filter(c => c.confederationID === confederationId);
   },
+
+  getFormattedDate: () => {
+    const { year, month } = get().gameDate;
+    const monthNames = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    return `${monthNames[month - 1]} ${year}`;
+  }
   
 }));

@@ -2,9 +2,11 @@ import { JSX, useState } from "react";
 import { GlobeAltIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
 import { useGodMode } from "@renderer/state/useGodMode";
 import Logo from "../../../../../resources/faSim.png";
+import { useGameStore } from "@renderer/state/gameStore";
 
 export default function Topbar(): JSX.Element {
   const { godMode, setGodMode } = useGodMode();
+  const { getFormattedDate } = useGameStore();
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   return (
@@ -49,7 +51,7 @@ export default function Topbar(): JSX.Element {
 
         {/* Month + Year */}
         <div className="border border-gray-500 px-4 py-2 text-lg tracking-wide rounded-lg">
-          January 2026
+          {getFormattedDate()}
         </div>
 
         {/* Continue Button */}

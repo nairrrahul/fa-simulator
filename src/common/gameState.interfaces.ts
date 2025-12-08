@@ -39,3 +39,9 @@ export interface KOMapping {
   team2MatchID: number | null;
   isLoser: boolean;
 }
+
+export interface GameDate {
+  year: number;
+  month: number;
+  day: number;
+}

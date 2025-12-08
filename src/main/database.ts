@@ -29,12 +29,14 @@ export function loadGameData() {
   const fixtures = db.prepare('SELECT * FROM FIXTURES').all();
   const knockoutMappings = db.prepare('SELECT * FROM KNOCKOUTMAPPING').all();
   const competitions = db.prepare('SELECT * FROM COMPETITIONS').all();
+  const gameStatusRaw = db.prepare('SELECT * FROM GAMESTATUS').get() as any;
   
   return {
     nations,
     fixtures,
     knockoutMappings,
-    competitions
+    competitions,
+    gameStatusRaw
   };
 }
 
@@ -42,6 +44,7 @@ export function saveGameData(data: {
   nations: any[], 
   fixtures: any[],
   knockoutMappings: any[],
+  gameStatus: { year: number, month: number, day: number }
 }) {
   if (!db) throw new Error('Database not initialized');
   
@@ -53,11 +56,16 @@ export function saveGameData(data: {
   
   const updateFixture = db.prepare(`
     UPDATE FIXTURES
-    SET team1ID = ?, team2ID = ?, result = ?, date = ?
+    SET team1ID = ?, team2ID = ?, scoreline = ?, outcome = ?, date = ?
     WHERE ID = ?
   `);
   
-  const transaction = db.transaction((nations, fixtures) => {
+  const updateGameStatus = db.prepare(`
+    UPDATE GAMESTATUS
+    SET year = ?, month = ?, day = ?
+  `);
+  
+   const transaction = db.transaction((nations, fixtures, gameStatus) => {
     for (const nation of nations) {
       updateNation.run(
         nation.rankingPts,
@@ -71,14 +79,21 @@ export function saveGameData(data: {
       updateFixture.run(
         fixture.team1ID,
         fixture.team2ID,
-        fixture.result,
+        fixture.scoreline,
+        fixture.outcome,
         fixture.date,
         fixture.id
       );
     }
+    
+    updateGameStatus.run(
+      gameStatus.year,
+      gameStatus.month,
+      gameStatus.day
+    );
   });
   
-  transaction(data.nations, data.fixtures);
+  transaction(data.nations, data.fixtures, data.gameStatus);
 }
 
 export function closeDatabase(): void {

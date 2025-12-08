@@ -1,6 +1,6 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
 import { Nation, Fixture, KOMapping } from './src/common/gameState.interfaces'
-import { Competition } from 'src/common/gameState.interfaces';
+import { Competition, GameDate } from 'src/common/gameState.interfaces';
 
 declare global {
   interface Window {
@@ -10,12 +10,14 @@ declare global {
         nations: Nation[];
         fixtures: Fixture[];
         competitions: Competition[];
+        gameStatus: GameDate;
         knockoutMappings: KOMapping[];
       }>;
       saveGameData: (data: { 
         nations: Nation[];
         fixtures: Fixture[];
         competitions: Competition[];
+        gameStatus: GameDate;
         knockoutMappings: KOMapping[];
       }) => Promise<void>;
     };
