@@ -157,7 +157,7 @@ function generateBracketFills(
         team1ID: null,
         team2ID: null,
         groupID: -1,
-        roundID: currentRound - 1, // Same round as final
+        roundID: currentRound, // final round + 1
         competitionID: competitionID,
         date: null,
         scoreline: null,

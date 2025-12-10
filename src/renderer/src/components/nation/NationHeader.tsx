@@ -96,7 +96,7 @@ export default function NationHeader({ nation, confederationInfo }: NationHeader
                     
                     {/* Fill */}
                     {fillType === 'full' && (
-                      <div className="absolute inset-0.5 rounded-full bg-yellow-500" />
+                      <div className="absolute inset-0 rounded-full bg-yellow-500" />
                     )}
                     {fillType === 'half' && (
                       <div className="absolute inset-0 overflow-hidden rounded-full">

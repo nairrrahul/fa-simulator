@@ -45,3 +45,58 @@ export interface GameDate {
   month: number;
   day: number;
 }
+
+export interface GoalInfo {
+  numGoals: number;
+  goalList: [number, number][];
+}
+
+export interface MatchResult {
+  matchID: number;
+  team1ID: number;
+  team2ID: number;
+  team1Goals: GoalInfo;
+  team2Goals: GoalInfo;
+  penalties: number[] | null;
+}
+
+// ------- competition storage info -----------
+
+export interface CompetitionGroup {
+  competitionID: number;
+  year: number;
+  groupID: number;
+  teamID: number;
+  gamesPlayed: number;
+  wins: number;
+  draws: number;
+  losses: number;
+  goalsFor: number;
+  goalsAgainst: number;
+  roundID: number;
+}
+
+export interface CompetitionHost {
+  competitionID: number;
+  year: number;
+  hostID: number;
+}
+
+export interface CompetitionSnapshot {
+  competitionID: number;
+  year: number;
+  firstID: number;
+  secondID: number;
+  thirdID: number | null;
+  fourthID: number | null;
+  goldenBallPlayerID: number | null;
+  goldenBootPlayerID: number | null;
+}
+
+// Helper types for organizing competition data
+export interface CompetitionYearData {
+  year: number;
+  hosts: number[];
+  groups: Map<number, CompetitionGroup[]>; 
+  snapshot: CompetitionSnapshot | null;
+}

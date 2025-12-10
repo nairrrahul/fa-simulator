@@ -3,23 +3,16 @@
  * Before Match: generate squads for match - starting 11 + substitutes
  * After Match:
  * 1. update player statistics
- * 2. update ranking points
- * 3. update fixture table
+ * 2. update player states (injuries, suspensions)
+ * 3. update ranking points
+ * 4. update fixture table
  */
 
-interface GoalInfo {
-  numGoals: number;
-  goalList: [number, number][];
-}
+import { MatchResult } from "src/common/gameState.interfaces";
 
-interface MatchResult {
-  matchID: number;
-  team1ID: number;
-  team2ID: number;
-  team1Goals: GoalInfo;
-  team2Goals: GoalInfo;
-  penalties: number[] | null;
-}
+
+
+
 
 export function basicGeneration(
   squad1: number,

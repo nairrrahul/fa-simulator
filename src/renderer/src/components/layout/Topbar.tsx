@@ -6,8 +6,16 @@ import { useGameStore } from "@renderer/state/gameStore";
 
 export default function Topbar(): JSX.Element {
   const { godMode, setGodMode } = useGodMode();
-  const { getFormattedDate } = useGameStore();
+  const { gameDate } = useGameStore();
   const [settingsOpen, setSettingsOpen] = useState(false);
+
+  const getMonthName = (month: number) => {
+    const monthNames = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    return monthNames[month - 1];
+  };
 
   return (
     <header className="fixed top-0 left-0 w-full h-24 flex items-center justify-between px-6 bg-[#1A1A22] border-b border-gray-700 z-30">
@@ -50,8 +58,13 @@ export default function Topbar(): JSX.Element {
         </div>
 
         {/* Month + Year */}
-        <div className="border border-gray-500 px-4 py-2 text-lg tracking-wide rounded-lg">
-          {getFormattedDate()}
+        <div className="border border-gray-500 px-4 py-2 text-lg tracking-wide rounded-lg flex flex-col items-center justify-center text-center">
+          <div className="text-sm text-gray-300">
+            {gameDate.day} {getMonthName(gameDate.month).toUpperCase()}
+          </div>
+          <div className="text-xl font-semibold tracking-wide">
+            {gameDate.year}
+          </div>
         </div>
 
         {/* Continue Button */}

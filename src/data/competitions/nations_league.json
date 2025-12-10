@@ -1,0 +1,122 @@
+{
+  "relativeYear": 2026,
+  "7": {
+    "divisions": [
+      {
+        "divisionName": "League A",
+        "numGroups": 4,
+        "numTeams": 16,
+        "leagueOptions": {
+          "numKO": 1,
+          "numUp": 0,
+          "numDown": 1,
+          "displayOptions": {
+            "1": "green",
+            "4": "red"
+          }
+        }
+      },
+      {
+        "divisionName": "League B",
+        "numGroups": 4,
+        "numTeams": 16,
+        "leagueOptions": {
+          "numKO": 0,
+          "numUp": 1,
+          "numDown": 1,
+          "displayOptions": {
+            "1": "green",
+            "4": "red"
+          }
+        }
+      },
+      {
+        "divisionName": "League C",
+        "numGroups": 2, 
+        "numTeams": 8,
+        "leagueOptions": {
+          "numKO": 0,
+          "numUp": 2,
+          "numDown": 0,
+          "displayOptions": {
+            "1": "green",
+            "2": "green"
+          }
+        }
+      }
+    ],
+    "groupWeight": 15,
+    "finalsWeight": 25,
+    "drawYear": "2026",
+    "drawMonth": "8",
+    "drawDay": "4",
+    "groupWindows": [[9, 2026], [10, 2026], [11, 2026]],
+    "knockoutWindow": [3, 2027]
+  },
+  "8": {
+    "divisions": [
+      {
+        "divisionName": "League A",
+        "numGroups": 4,
+        "numTeams": 16,
+        "leagueOptions": {
+          "numKO": 1,
+          "numUp": 0,
+          "numDown": 1,
+          "displayOptions": {
+            "1": "green",
+            "4": "red"
+          }
+        }
+      },
+      {
+        "divisionName": "League B",
+        "numGroups": 4,
+        "numTeams": 16,
+        "leagueOptions": {
+          "numKO": 0,
+          "numUp": 1,
+          "numDown": 1,
+          "displayOptions": {
+            "1": "green",
+            "4": "red"
+          }
+        }
+      },
+      {
+        "divisionName": "League C",
+        "numGroups": 4,
+        "numTeams": 16,
+        "leagueOptions": {
+          "numKO": 0,
+          "numUp": 1,
+          "numDown": 1,
+          "displayOptions": {
+            "1": "green",
+            "4": "red"
+          }
+        }
+      },
+      {
+        "divisionName": "League D",
+        "numGroups": 4,
+        "numTeams": 16,
+        "leagueOptions": {
+          "numKO": 0,
+          "numUp": 1,
+          "numDown": 1,
+          "displayOptions": {
+            "1": "green"
+          }
+        }
+      }
+    ],
+    "groupWeight": 15,
+    "finalsWeight": 25,
+    "drawYear": "2026",
+    "drawMonth": "8",
+    "drawDay": "5",
+    "groupWindows": [[9, 2026], [10, 2026], [11, 2026]],
+    "knockoutWindow": [3, 2027]
+  }
+}
