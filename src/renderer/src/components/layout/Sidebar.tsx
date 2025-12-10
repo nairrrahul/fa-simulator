@@ -25,7 +25,7 @@ export default function Sidebar(): JSX.Element {
       {/* 2: Competitions */}
       <SidebarSection
         items={[
-          { label: "Competitions", icon: <TrophyIcon className="w-5 h-5" /> },
+          { label: "Competitions", icon: <TrophyIcon className="w-5 h-5" />, path: "/competition-search" },
         ]}
       />
 

@@ -58,6 +58,9 @@ export default function NationHeader({ nation, confederationInfo }: NationHeader
             </h1>
             <p className="text-lg text-gray-400">
               {nation.abbrev} • {confederationInfo}
+              {godMode && (
+                  <span className="text-gray-400 text-sm ml-1">• [ID: {nation.id}]</span>
+               )}
             </p>
           </div>
 

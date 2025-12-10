@@ -58,6 +58,10 @@ interface GameState {
   getCompetitionGroupStandings: (competitionId: number, year: number, groupId: number) => CompetitionGroup[];
   getCompetitionSnapshot: (competitionId: number, year: number) => CompetitionSnapshot | null;
   getCompetitionHistory: (competitionId: number) => CompetitionSnapshot[];
+  getAvailableYearsForCompetition: (competitionId: number) => number[];
+  getCompletedYearsForCompetition: (competitionId: number) => number[];
+  getActiveOrUpcomingYearsForCompetition: (competitionId: number) => number[];
+  isCompetitionCompleted: (competitionId: number, year: number) => boolean;
 }
 
 export const useGameStore = create<GameState>((set, get) => ({
@@ -294,6 +298,86 @@ export const useGameStore = create<GameState>((set, get) => ({
       }
     });
     
-    return snapshots.sort((a, b) => b.year - a.year); // Most recent first
+    return snapshots.sort((a, b) => b.year - a.year); 
+  },
+  
+  getAvailableYearsForCompetition: (competitionId: number) => {
+    const competition = get().competitions.get(competitionId);
+    if (!competition) return [];
+    
+    // For finals competitions (type 0), get years from hosts
+    if (competition.competitionType === 0) {
+      const yearMap = get().competitionYearData.get(competitionId);
+      if (!yearMap) return [];
+      return Array.from(yearMap.keys()).sort((a, b) => b - a);
+    }
+    
+    // For qualifiers (type 1), get years from parent competition's hosts
+    if (competition.competitionType === 1 && competition.parentCompetition !== -1) {
+      const parentYearMap = get().competitionYearData.get(competition.parentCompetition);
+      if (!parentYearMap) return [];
+      return Array.from(parentYearMap.keys()).sort((a, b) => b - a);
+    }
+    
+    // For nations league (type 2), return empty for now
+    if (competition.competitionType === 2) {
+      return [];
+    }
+    
+    return [];
+  },
+  
+  getCompletedYearsForCompetition: (competitionId: number) => {
+    const competition = get().competitions.get(competitionId);
+    if (!competition) return [];
+    
+    const checkId = competition.competitionType === 1 && competition.parentCompetition !== -1
+      ? competition.parentCompetition
+      : competitionId;
+    
+    const yearMap = get().competitionYearData.get(checkId);
+    if (!yearMap) return [];
+    
+    const completedYears: number[] = [];
+    yearMap.forEach((yearData, year) => {
+      if (yearData.snapshot) {
+        completedYears.push(year);
+      }
+    });
+    
+    return completedYears.sort((a, b) => b - a);
+  },
+  
+  getActiveOrUpcomingYearsForCompetition: (competitionId: number) => {
+    const competition = get().competitions.get(competitionId);
+    if (!competition) return [];
+    
+    const checkId = competition.competitionType === 1 && competition.parentCompetition !== -1
+      ? competition.parentCompetition
+      : competitionId;
+    
+    const yearMap = get().competitionYearData.get(checkId);
+    if (!yearMap) return [];
+    
+    const activeYears: number[] = [];
+    yearMap.forEach((yearData, year) => {
+      if (!yearData.snapshot) {
+        activeYears.push(year);
+      }
+    });
+    
+    return activeYears.sort((a, b) => b - a);
+  },
+  
+  isCompetitionCompleted: (competitionId: number, year: number) => {
+    const competition = get().competitions.get(competitionId);
+    if (!competition) return false;
+    
+    const checkId = competition.competitionType === 1 && competition.parentCompetition !== -1
+      ? competition.parentCompetition
+      : competitionId;
+    
+    const yearData = get().competitionYearData.get(checkId)?.get(year);
+    return yearData?.snapshot !== null && yearData?.snapshot !== undefined;
   }
 }));

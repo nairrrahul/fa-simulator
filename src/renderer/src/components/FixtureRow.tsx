@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Fixture, Nation } from "src/common/gameState.interfaces";
 import { useGameStore } from "@renderer/state/gameStore";
 import FlagCard from "./FlagCard";
+import { getFixtureSuffixForCompetition } from "../../../utils/CompetitionFormatUtils";
 
 interface FixtureRowProps {
   fixture: Fixture;
@@ -15,6 +16,13 @@ export default function FixtureRow({ fixture, opponent, outcomeForNation }: Fixt
   const { getCompetitionById } = useGameStore();
   
   const competition = fixture.competitionID != null ? getCompetitionById(fixture.competitionID) : null;
+
+  const suffix = getFixtureSuffixForCompetition(
+    competition?.competitionType,
+    fixture.competitionID,
+    fixture.roundID,
+    fixture.groupID
+  );
 
   const getOutcomeColor = (outcome: number | null) => {
     switch (outcome) {
@@ -85,7 +93,7 @@ export default function FixtureRow({ fixture, opponent, outcomeForNation }: Fixt
 
       {/* Competition */}
       <div className="text-gray-400 text-sm">
-        {competition ? competition.name : "Friendly"}
+        {competition ? competition.name + " " + suffix : "Unknown"}
       </div>
     </div>
   );

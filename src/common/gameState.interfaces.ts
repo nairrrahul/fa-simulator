@@ -31,6 +31,7 @@ export interface Competition {
   periodicity: number;
   competitionType: number;
   hostPrevCycles: number;
+  parentCompetition: number;
 }
 
 export interface KOMapping {
