@@ -2,11 +2,13 @@ import { JSX, useState, useEffect, useRef, useMemo } from "react";
 import { useGameStore } from "@renderer/state/gameStore";
 import { Competition } from "src/common/gameState.interfaces";
 import { MagnifyingGlassIcon, TrophyIcon } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router-dom";
 
 type SearchMode = "name" | "dropdown";
 
 export default function CompetitionSearchPage(): JSX.Element {
-  const { competitions, getAvailableYearsForCompetition } = useGameStore();
+  const navigate = useNavigate();
+  const { competitions, getAvailableYearsForCompetition, gameDate } = useGameStore();
   const [searchMode, setSearchMode] = useState<SearchMode>("name");
   
   // Name search state
@@ -30,8 +32,8 @@ export default function CompetitionSearchPage(): JSX.Element {
   
   // Get available years for selected dropdown competition
   const availableYears = useMemo(() => {
-    if (!dropdownCompetition) return [];
-    return getAvailableYearsForCompetition(dropdownCompetition).filter(year => year >= 2026);
+    if (dropdownCompetition == null) return [];
+    return getAvailableYearsForCompetition(dropdownCompetition).filter(y => y >= 2026);;
   }, [dropdownCompetition, getAvailableYearsForCompetition]);
   
   // Filter competitions based on search query
@@ -87,18 +89,31 @@ export default function CompetitionSearchPage(): JSX.Element {
   };
   
   const handleNameSearchGo = () => {
-    if (selectedCompetition) {
-      console.log("Navigate to competition:", selectedCompetition);
-      // TODO: Navigation will be implemented later
+    if (selectedCompetition && selectedCompetition.competitionType === 0) {
+      // Find closest year to current game year, rounding down
+      const availableYears = getAvailableYearsForCompetition(selectedCompetition.id)
+        .filter(y => y >= 2026);
+      
+      if (availableYears.length === 0) return;
+      
+      // Find closest year <= current year, or smallest year if all are > current
+      const currentYear = gameDate.year;
+      const closestYear = availableYears
+        .filter(y => y <= currentYear)
+        .sort((a, b) => b - a)[0] || availableYears.sort((a, b) => a - b)[0];
+      
+      navigate(`/competition/${selectedCompetition.id}/${closestYear}`);
     }
   };
   
   const handleDropdownSearchGo = () => {
-    if (dropdownCompetition && dropdownYear) {
-      console.log("Navigate to competition:", dropdownCompetition, "year:", dropdownYear);
-      // TODO: Navigation will be implemented later
+    const comp = competitions.get(dropdownCompetition!);
+    if (dropdownCompetition != null && dropdownYear && comp && comp.competitionType === 0) {
+      navigate(`/competition/${dropdownCompetition}/${dropdownYear}`);
     }
   };
+
+  console.log(availableYears);
   
   const getCompetitionTypeLabel = (type: number) => {
     switch (type) {
@@ -203,12 +218,13 @@ export default function CompetitionSearchPage(): JSX.Element {
                 
                 <button
                   onClick={handleNameSearchGo}
-                  disabled={!selectedCompetition}
+                  disabled={!selectedCompetition || selectedCompetition.competitionType !== 0}
                   className={`px-8 py-3 rounded-lg font-medium transition-all ${
-                    selectedCompetition
+                    selectedCompetition && selectedCompetition.competitionType === 0
                       ? "bg-cyan-600 hover:bg-cyan-700 text-white cursor-pointer"
                       : "bg-gray-700 text-gray-500 cursor-not-allowed"
                   }`}
+                  title={selectedCompetition && selectedCompetition.competitionType !== 0 ? "Only finals competitions supported" : ""}
                 >
                   Go
                 </button>
@@ -248,14 +264,14 @@ export default function CompetitionSearchPage(): JSX.Element {
                 </label>
                 <select
                   id="competition-dropdown"
-                  value={dropdownCompetition || ""}
-                  onChange={(e) => setDropdownCompetition(Number(e.target.value) || null)}
+                  value={dropdownCompetition ?? ""}
+                  onChange={(e) => setDropdownCompetition(Number(e.target.value) ?? null)}
                   className="w-full px-4 py-3 bg-[#1E1E25] border border-gray-600 rounded-lg text-gray-100 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500"
                 >
                   <option value="">Select a competition...</option>
                   {searchableCompetitions.map((comp) => (
                     <option key={comp.id} value={comp.id}>
-                      {comp.name} ({getCompetitionTypeLabel(comp.competitionType)})
+                      {comp.name}
                     </option>
                   ))}
                 </select>
@@ -271,11 +287,11 @@ export default function CompetitionSearchPage(): JSX.Element {
                 </label>
                 <select
                   id="year-dropdown"
-                  value={dropdownYear || ""}
+                  value={dropdownYear ?? ""}
                   onChange={(e) => setDropdownYear(Number(e.target.value) || null)}
-                  disabled={!dropdownCompetition || availableYears.length === 0}
+                  disabled={dropdownCompetition == null || availableYears.length === 0}
                   className={`w-full px-4 py-3 bg-[#1E1E25] border border-gray-600 rounded-lg text-gray-100 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 ${
-                    !dropdownCompetition || availableYears.length === 0
+                    dropdownCompetition == null || availableYears.length === 0
                       ? "opacity-50 cursor-not-allowed"
                       : ""
                   }`}
@@ -287,7 +303,7 @@ export default function CompetitionSearchPage(): JSX.Element {
                     </option>
                   ))}
                 </select>
-                {dropdownCompetition && availableYears.length === 0 && (
+                {dropdownCompetition != null && availableYears.length === 0 && (
                   <p className="text-sm text-gray-500 mt-1">
                     No years available for this competition
                   </p>
@@ -297,15 +313,18 @@ export default function CompetitionSearchPage(): JSX.Element {
             
             <button
               onClick={handleDropdownSearchGo}
-              disabled={!dropdownCompetition || !dropdownYear}
+              disabled={dropdownCompetition  == null || !dropdownYear || competitions.get(dropdownCompetition!)?.competitionType !== 0}
               className={`w-full py-3 px-6 rounded-lg font-medium transition-all ${
-                dropdownCompetition && dropdownYear
+                dropdownCompetition != null && dropdownYear && competitions.get(dropdownCompetition)?.competitionType === 0
                   ? "bg-cyan-600 hover:bg-cyan-700 text-white cursor-pointer"
                   : "bg-gray-700 text-gray-500 cursor-not-allowed"
               }`}
+              title={dropdownCompetition != null && competitions.get(dropdownCompetition)?.competitionType !== 0 ? "Only finals competitions supported" : ""}
             >
-              {dropdownCompetition && dropdownYear
+              {dropdownCompetition != null && dropdownYear && competitions.get(dropdownCompetition)?.competitionType === 0
                 ? "View Competition"
+                : dropdownCompetition != null && competitions.get(dropdownCompetition)?.competitionType !== 0
+                ? "Only finals competitions supported"
                 : "Select Competition and Year"}
             </button>
           </div>

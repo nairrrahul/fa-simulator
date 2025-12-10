@@ -33,16 +33,17 @@ export function loadGameData() {
   const competitionGroups = db.prepare('SELECT * FROM COMPETITIONGROUPS').all();
   const competitionHosts = db.prepare('SELECT * FROM COMPETITIONHOSTS').all();
   const competitionSnapshots = db.prepare('SELECT * FROM COMPETITIONSNAPSHOT').all();
+  const competitionQualified = db.prepare('SELECT * FROM COMPETITIONQUALIFIED').all();
   
   // Map database column names to interface property names for fixtures
   const fixtures = fixturesRaw.map((f: any) => ({
-    id: f.id,
+    id: f.ID,
     team1ID: f.team1ID,
     team2ID: f.team2ID,
-    competitionID: f.competitionID,
-    groupID: f.groupID,
-    roundID: f.roundID,
-    date: f.date,
+    competitionID: f.competitionId,
+    groupID: f.groupId,
+    roundID: f.roundId,
+    date: f.calculateddate,
     scoreline: f.scoreline,
     outcome: f.outcome
   }));
@@ -69,7 +70,8 @@ export function loadGameData() {
     gameStatus,
     competitionGroups,
     competitionHosts,
-    competitionSnapshots
+    competitionSnapshots,
+    competitionQualified
   };
 }
 

@@ -6,10 +6,16 @@ import {
   CompetitionGroup,
   CompetitionHost,
   CompetitionSnapshot,
-  CompetitionYearData,
-  GameDate
+  CompetitionQualified,
+  CompetitionYearData
 } from 'src/common/gameState.interfaces';
 import { create } from 'zustand';
+
+export interface GameDate {
+  year: number;
+  month: number;
+  day: number;
+}
 
 interface GameState {
   nations: Nation[];
@@ -30,7 +36,8 @@ interface GameState {
     gameStatus: GameDate,
     competitionGroups: CompetitionGroup[],
     competitionHosts: CompetitionHost[],
-    competitionSnapshots: CompetitionSnapshot[]
+    competitionSnapshots: CompetitionSnapshot[],
+    competitionQualified: CompetitionQualified[]
   }) => void;
   updateNation: (id: number, updates: Partial<Nation>) => void;
   updateRankingPoints: (id: number, points: number) => void;
@@ -93,7 +100,8 @@ export const useGameStore = create<GameState>((set, get) => ({
           year: host.year,
           hosts: [],
           groups: new Map(),
-          snapshot: null
+          snapshot: null,
+          qualifiedTeams: []
         });
       }
       yearMap.get(host.year)!.hosts.push(host.hostID);
@@ -111,7 +119,8 @@ export const useGameStore = create<GameState>((set, get) => ({
           year: group.year,
           hosts: [],
           groups: new Map(),
-          snapshot: null
+          snapshot: null,
+          qualifiedTeams: []
         });
       }
       
@@ -141,10 +150,30 @@ export const useGameStore = create<GameState>((set, get) => ({
           year: snapshot.year,
           hosts: [],
           groups: new Map(),
-          snapshot: null
+          snapshot: null,
+          qualifiedTeams: []
         });
       }
       yearMap.get(snapshot.year)!.snapshot = snapshot;
+    });
+    
+    // Process qualified teams
+    data.competitionQualified.forEach(qualified => {
+      if (!competitionYearData.has(qualified.competitionID)) {
+        competitionYearData.set(qualified.competitionID, new Map());
+      }
+      const yearMap = competitionYearData.get(qualified.competitionID)!;
+      
+      if (!yearMap.has(qualified.year)) {
+        yearMap.set(qualified.year, {
+          year: qualified.year,
+          hosts: [],
+          groups: new Map(),
+          snapshot: null,
+          qualifiedTeams: []
+        });
+      }
+      yearMap.get(qualified.year)!.qualifiedTeams.push(qualified.teamID);
     });
     
     set({ 
@@ -298,7 +327,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       }
     });
     
-    return snapshots.sort((a, b) => b.year - a.year); 
+    return snapshots.sort((a, b) => b.year - a.year); // Most recent first
   },
   
   getAvailableYearsForCompetition: (competitionId: number) => {

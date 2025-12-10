@@ -1,5 +1,5 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
-import { Nation, Fixture, KOMapping, Competition, CompetitionGroup, CompetitionHost, CompetitionSnapshot } from './src/common/gameState.interfaces'
+import { Nation, Fixture, KOMapping, Competition, CompetitionGroup, CompetitionHost, CompetitionSnapshot, CompetitionQualified } from './src/common/gameState.interfaces'
 import { GameDate } from './src/renderer/src/state/gameStore'
 
 declare global {
@@ -15,6 +15,7 @@ declare global {
         competitionGroups: CompetitionGroup[];
         competitionHosts: CompetitionHost[];
         competitionSnapshots: CompetitionSnapshot[];
+        competitionQualified: CompetitionQualified[];
       }>;
       saveGameData: (data: { 
         nations: Nation[];

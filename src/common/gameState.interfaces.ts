@@ -93,11 +93,16 @@ export interface CompetitionSnapshot {
   goldenBallPlayerID: number | null;
   goldenBootPlayerID: number | null;
 }
-
-// Helper types for organizing competition data
 export interface CompetitionYearData {
   year: number;
-  hosts: number[];
-  groups: Map<number, CompetitionGroup[]>; 
+  hosts: number[]; 
+  groups: Map<number, CompetitionGroup[]>;
   snapshot: CompetitionSnapshot | null;
+  qualifiedTeams: number[]; 
+}
+
+export interface CompetitionQualified {
+  competitionID: number;
+  year: number;
+  teamID: number;
 }

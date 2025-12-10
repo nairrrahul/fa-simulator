@@ -10,6 +10,7 @@ import NationSearchPage from './pages/NationSearchPage'
 import NationOverviewPage from './pages/NationOverviewPage'
 import NationFixturesPage from './pages/NationFixturesPage'
 import CompetitionSearchPage from './pages/CompetitionSearchPage'
+import CompetitionFinalsPage from './pages/CompetitionFinalsStage'
 
 
 createRoot(document.getElementById('root')!).render(
@@ -23,6 +24,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/nation/:nationId" element={<NationOverviewPage />} />
           <Route path="/nation/:nationId/fixtures" element={<NationFixturesPage />} />
           <Route path="/competition-search" element={<CompetitionSearchPage />} />
+          <Route path="/competition/:competitionId/:year" element={<CompetitionFinalsPage />} />
         </Routes>
       </Layout>
     </BrowserRouter>
