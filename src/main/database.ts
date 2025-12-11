@@ -37,13 +37,13 @@ export function loadGameData() {
   
   // Map database column names to interface property names for fixtures
   const fixtures = fixturesRaw.map((f: any) => ({
-    id: f.ID,
+    id: f.id,
     team1ID: f.team1ID,
     team2ID: f.team2ID,
-    competitionID: f.competitionId,
-    groupID: f.groupId,
-    roundID: f.roundId,
-    date: f.calculateddate,
+    competitionID: f.competitionID,
+    groupID: f.groupID,
+    roundID: f.roundID,
+    date: f.date,
     scoreline: f.scoreline,
     outcome: f.outcome
   }));

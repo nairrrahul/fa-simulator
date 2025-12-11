@@ -106,6 +106,22 @@ export const useGameStore = create<GameState>((set, get) => ({
       }
       yearMap.get(host.year)!.hosts.push(host.hostID);
     });
+
+    //we need to fill host data for legacy comps - this is a visual fix for the competition winners page
+    data.competitionSnapshots.forEach(sshot => {
+      const yearMap = competitionYearData.get(sshot.competitionID)!;
+      if(!yearMap.has(sshot.year)) {
+        yearMap.set(sshot.year, {
+          year: sshot.year,
+          hosts: [],
+          groups: new Map(),
+          snapshot: null,
+          qualifiedTeams: []
+        });
+      }
+
+      yearMap.get(sshot.year)!.hosts.push(sshot.host);
+    });
     
     // Process groups
     data.competitionGroups.forEach(group => {

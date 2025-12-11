@@ -1,4 +1,5 @@
 import { JSX, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { useGameStore } from "@renderer/state/gameStore";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import FlagCard from "../FlagCard";
@@ -8,6 +9,7 @@ interface CompetitionPastWinnersProps {
 }
 
 export default function CompetitionPastWinners({ competitionId }: CompetitionPastWinnersProps): JSX.Element {
+  const navigate = useNavigate();
   const { getCompetitionHistory, nations } = useGameStore();
 
   const winners = useMemo(() => {
@@ -23,7 +25,10 @@ export default function CompetitionPastWinners({ competitionId }: CompetitionPas
 
   return (
     <div className="bg-[#13131A] rounded-lg p-6 border border-gray-700">
-      <h2 className="text-lg font-semibold text-cyan-400 uppercase tracking-wide mb-4 cursor-pointer hover:text-cyan-300 transition-colors">
+      <h2 
+        onClick={() => navigate(`/competition/past-winners/${competitionId}`)}
+        className="text-lg font-semibold text-cyan-400 uppercase tracking-wide mb-4 cursor-pointer hover:text-cyan-300 transition-colors"
+      >
         PAST WINNERS <ChevronRightIcon className="w-4 h-4 inline" />
       </h2>
       

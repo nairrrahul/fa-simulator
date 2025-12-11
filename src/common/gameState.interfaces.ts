@@ -85,6 +85,7 @@ export interface CompetitionHost {
 
 export interface CompetitionSnapshot {
   competitionID: number;
+  host: number;
   year: number;
   firstID: number;
   secondID: number;

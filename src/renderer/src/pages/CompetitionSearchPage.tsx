@@ -102,18 +102,16 @@ export default function CompetitionSearchPage(): JSX.Element {
         .filter(y => y <= currentYear)
         .sort((a, b) => b - a)[0] || availableYears.sort((a, b) => a - b)[0];
       
-      navigate(`/competition/${selectedCompetition.id}/${closestYear}`);
+      navigate(`/competition/finals/${selectedCompetition.id}/${closestYear}`);
     }
   };
   
   const handleDropdownSearchGo = () => {
     const comp = competitions.get(dropdownCompetition!);
     if (dropdownCompetition != null && dropdownYear && comp && comp.competitionType === 0) {
-      navigate(`/competition/${dropdownCompetition}/${dropdownYear}`);
+      navigate(`/competition/finals/${dropdownCompetition}/${dropdownYear}`);
     }
   };
-
-  console.log(availableYears);
   
   const getCompetitionTypeLabel = (type: number) => {
     switch (type) {
