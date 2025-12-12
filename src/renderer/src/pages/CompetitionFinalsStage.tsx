@@ -6,6 +6,7 @@ import CompetitionFixtures from "@renderer/components/competition/CompetitionFix
 import CompetitionPastWinners from "@renderer/components/competition/CompetitionPastWinners";
 import CompetitionPlayerStats from "@renderer/components/competition/CompetitionPlayerStats";
 import CompetitionQualifiedTeams from "@renderer/components/competition/CompetitionQualifiedTeams";
+import { getRoundTypeByCompetition } from "../../../utils/CompetitionFormatUtils";
 
 export default function CompetitionFinalsPage(): JSX.Element {
   const { competitionId, year } = useParams<{ competitionId: string; year: string }>();
@@ -73,6 +74,7 @@ export default function CompetitionFinalsPage(): JSX.Element {
           <CompetitionStages
             competitionId={competition.id}
             year={competitionYear}
+            getRoundTypeByCompetition={getRoundTypeByCompetition}
           />
         </div>
 

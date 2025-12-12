@@ -57,7 +57,7 @@ export default function CompetitionFixtures({ competitionId, year }: Competition
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
+    return date.toLocaleDateString('en-GB', { 
       day: 'numeric',
       month: 'short',
       year: 'numeric'

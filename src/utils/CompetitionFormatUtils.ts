@@ -1,4 +1,4 @@
-import { FinalsCompetitionJSON } from 'src/common/competitions.interfaces';
+import { FinalsCompetitionJSON, FinalsGroupStageOptions, FinalsGroupStageStruct } from 'src/common/competitions.interfaces';
 import finalsCompInfo from '../data/competitions/final_competitions.json'  with { type: 'json' };
 import nlCompInfo from '../data/competitions/nations_league.json'  with { type: 'json' };
 import qualifiersCompInfo from '../data/competitions/qualifying_competitions.json'  with { type: 'json' };
@@ -19,7 +19,7 @@ export function getFixtureSuffixForCompetition(
         return "Group " + String.fromCharCode(64 + groupID);
       } else {
         //knockouts
-        return FINALS_JSON.competitions[competitionID].rounds[roundID].stageName;
+        return FINALS_JSON.competitions[competitionID].rounds[roundID-1].stageName;
       }
     case 1:
       //qualifiers
@@ -34,5 +34,41 @@ export function getFixtureSuffixForCompetition(
       }
     default:
       return "Invalid";
+  }
+}
+
+export function getRoundTypeByCompetition(competitionID, competitionType, roundID) {
+  switch(competitionType) {
+    //final tournament
+    case 0:
+      return FINALS_JSON.competitions[competitionID].rounds[roundID-1].stageType;
+    case 1:
+      //qualifiers
+      return "GROUPSTAGEREG";
+    case 2:
+      //nations league
+      return "GROUPSTAGEREG";
+    default:
+      return "GROUPSTAGEREG";
+  }
+}
+
+export function getGroupDisplayOptions(competitionID, competitionType, roundID) {
+  switch(competitionType) {
+    //final tournament
+    case 0:
+      const competition = FINALS_JSON.competitions[competitionID];
+      if(!competition.rounds[roundID-1].stageType.startsWith("GROUPSTAGE")) {
+        return {};
+      }
+      return (FINALS_JSON.competitions[competitionID].rounds[roundID-1] as FinalsGroupStageStruct).groupStageOptions.displayOptions;
+    case 1:
+      //qualifiers
+      return {};
+    case 2:
+      //nations league
+      return {};
+    default:
+      return {};
   }
 }

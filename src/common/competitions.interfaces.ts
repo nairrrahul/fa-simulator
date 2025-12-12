@@ -1,3 +1,5 @@
+//---finals competitions---
+
 export interface FinalsGroupStageStruct {
   stageName: string;
   stageType: string;
