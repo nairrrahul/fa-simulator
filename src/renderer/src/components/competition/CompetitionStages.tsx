@@ -3,7 +3,7 @@ import { useGameStore } from "@renderer/state/gameStore";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import GroupStageTable from "../GroupStageTable";
 import FlagCard from "../FlagCard";
-import { getGroupDisplayOptions, getRoundNameByCompetition } from "../../../../utils/CompetitionFormatUtils";
+import { getFixtureSuffixForCompetition, getGroupDisplayOptions, getRoundNameByCompetition } from "../../../../utils/CompetitionFormatUtils";
 
 interface CompetitionStagesProps {
   competitionId: number;
@@ -113,7 +113,7 @@ export default function CompetitionStages({
                   standings={roundStandings}
                   viewMode="compressed"
                   displayOptions={getGroupDisplayOptions(competitionId, competition?.competitionType, currentRound)}
-                  groupLabel={`GROUP ${groupId}`}
+                  groupLabel={getFixtureSuffixForCompetition(competitionId, competition!.competitionType, currentRound, groupId)}
                 />
               );
             })}
