@@ -3,7 +3,7 @@ import { useGameStore } from "@renderer/state/gameStore";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import GroupStageTable from "../GroupStageTable";
 import FlagCard from "../FlagCard";
-import { getGroupDisplayOptions } from "../../../../utils/CompetitionFormatUtils";
+import { getGroupDisplayOptions, getRoundNameByCompetition } from "../../../../utils/CompetitionFormatUtils";
 
 interface CompetitionStagesProps {
   competitionId: number;
@@ -92,7 +92,7 @@ export default function CompetitionStages({
         >
           {availableRounds.map((round, idx) => (
             <option key={round} value={idx}>
-              Round {round}
+              {getRoundNameByCompetition(competition!.id, competition!.competitionType, round)}
             </option>
           ))}
         </select>

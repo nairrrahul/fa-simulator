@@ -1,6 +1,7 @@
 import { JSX, useState, useMemo } from "react";
 import { useGameStore } from "@renderer/state/gameStore";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
+import { getFixtureSuffixForCompetition } from "../../../../utils/CompetitionFormatUtils";
 
 interface CompetitionFixturesProps {
   competitionId: number;
@@ -8,7 +9,7 @@ interface CompetitionFixturesProps {
 }
 
 export default function CompetitionFixtures({ competitionId, year }: CompetitionFixturesProps): JSX.Element {
-  const { fixtures, nations } = useGameStore();
+  const { fixtures, nations, getCompetitionById } = useGameStore();
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   // Get all fixtures for this competition
@@ -42,6 +43,7 @@ export default function CompetitionFixtures({ competitionId, year }: Competition
   }, [competitionFixtures, selectedDate]);
 
   const currentDateIndex = availableDates.indexOf(selectedDate || "");
+  const competition = getCompetitionById(competitionId);
 
   const handlePrevDate = () => {
     if (currentDateIndex > 0) {
@@ -129,7 +131,14 @@ export default function CompetitionFixtures({ competitionId, year }: Competition
             
             return (
               <div key={fixture.id} className="py-3">
-                <div className="text-xs text-gray-500 mb-2">Fixture</div>
+                <div className="text-xs text-gray-500 mb-2">{
+                  getFixtureSuffixForCompetition(
+                    competition?.competitionType,
+                    competition!.id,
+                    fixture.roundID,
+                    fixture.groupID
+                  )
+                  }</div>
                 <div className="grid grid-cols-[1fr_auto_1fr] gap-4 items-center">
                   {/* Team 1 - Right aligned */}
                   <div className="text-right">

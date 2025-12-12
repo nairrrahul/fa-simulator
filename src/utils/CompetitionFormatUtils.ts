@@ -53,6 +53,22 @@ export function getRoundTypeByCompetition(competitionID, competitionType, roundI
   }
 }
 
+export function getRoundNameByCompetition(competitionID, competitionType, roundID) {
+  switch(competitionType) {
+    //final tournament
+    case 0:
+      return FINALS_JSON.competitions[competitionID].rounds[roundID-1].stageName;
+    case 1:
+      //qualifiers
+      return "Round One";
+    case 2:
+      //nations league
+      return "League Phase";
+    default:
+      return "Invalid";
+  }
+}
+
 export function getGroupDisplayOptions(competitionID, competitionType, roundID) {
   switch(competitionType) {
     //final tournament
