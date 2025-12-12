@@ -7,7 +7,7 @@ import FlagCard from "./FlagCard";
 interface GroupStageTableProps {
   standings: CompetitionGroup[];
   viewMode?: "compressed" | "normal";
-  displayOptions?: Record<string, string>;
+  displayOptions?: Record<string, string | undefined>;
   groupLabel?: string;
 }
 

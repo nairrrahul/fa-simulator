@@ -28,7 +28,15 @@ export function getFixtureSuffixForCompetition(
     case 2:
       //nations league
       //we use roundID as a proxy for league when it comes to filtering
-
+      const numGroups = NL_JSON.competitions[competitionID].divisions.length;
+      if(numGroups <= roundID) {
+        //then we are in group stage
+        return NL_JSON.competitions[competitionID].divisions[roundID-1].divisionName +
+        " Group " + String.fromCharCode(64 + groupID);
+      } else {
+        const newIdx = roundID - numGroups - 1;
+        return NL_JSON.competitions[competitionID].knockoutRounds[newIdx].roundName;
+      }
       
     default:
       return "Invalid";
@@ -45,7 +53,14 @@ export function getRoundTypeByCompetition(competitionID, competitionType, roundI
       return "GROUPSTAGEREG";
     case 2:
       //nations league
-      return "GROUPSTAGEREG";
+      const numGroups = NL_JSON.competitions[competitionID].divisions.length;
+      if(numGroups <= roundID) {
+        //then we are in group stage
+        return NL_JSON.competitions[competitionID].divisions[roundID-1].stageType;
+      } else {
+        const newIdx = roundID - numGroups - 1;
+        return NL_JSON.competitions[competitionID].knockoutRounds[newIdx].stageType;
+      }
     default:
       return "GROUPSTAGEREG";
   }
@@ -61,7 +76,14 @@ export function getRoundNameByCompetition(competitionID, competitionType, roundI
       return "Round One";
     case 2:
       //nations league
-      return "League Phase";
+      const numGroups = NL_JSON.competitions[competitionID].divisions.length;
+      if(numGroups <= roundID) {
+        //then we are in group stage
+        return NL_JSON.competitions[competitionID].divisions[roundID-1].divisionName;
+      } else {
+        const newIdx = roundID - numGroups - 1;
+        return NL_JSON.competitions[competitionID].knockoutRounds[newIdx].roundName;
+      }
     default:
       return "Invalid";
   }
@@ -81,7 +103,13 @@ export function getGroupDisplayOptions(competitionID, competitionType, roundID) 
       return {};
     case 2:
       //nations league
-      return {};
+      const numGroups = NL_JSON.competitions[competitionID].divisions.length;
+      if(numGroups <= roundID) {
+        //then we are in group stage
+        return NL_JSON.competitions[competitionID].divisions[roundID-1].leagueOptions.displayOptions;
+      } else {
+        return {};
+      };
     default:
       return {};
   }

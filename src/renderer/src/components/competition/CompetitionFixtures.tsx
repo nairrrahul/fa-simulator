@@ -12,13 +12,19 @@ export default function CompetitionFixtures({ competitionId, year }: Competition
   const { fixtures, nations, getCompetitionById } = useGameStore();
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
-  // Get all fixtures for this competition
+  // Get all fixtures for this competition AND this specific year
   const competitionFixtures = useMemo(() => {
     return Array.from(fixtures.values())
       .filter(f => f.competitionID === competitionId)
       .filter(f => f.date !== null)
+      .filter(f => {
+        // Only include fixtures from the specified year
+        if (!f.date) return false;
+        const fixtureYear = new Date(f.date).getFullYear();
+        return fixtureYear === year;
+      })
       .sort((a, b) => new Date(a.date!).getTime() - new Date(b.date!).getTime());
-  }, [fixtures, competitionId]);
+  }, [fixtures, competitionId, year]);
 
   // Get unique dates
   const availableDates = useMemo(() => {
@@ -59,7 +65,7 @@ export default function CompetitionFixtures({ competitionId, year }: Competition
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-GB', { 
+    return date.toLocaleDateString('en-US', { 
       day: 'numeric',
       month: 'short',
       year: 'numeric'
@@ -137,8 +143,7 @@ export default function CompetitionFixtures({ competitionId, year }: Competition
                     competition!.id,
                     fixture.roundID,
                     fixture.groupID
-                  )
-                  }</div>
+                  )}</div>
                 <div className="grid grid-cols-[1fr_auto_1fr] gap-4 items-center">
                   {/* Team 1 - Right aligned */}
                   <div className="text-right">
