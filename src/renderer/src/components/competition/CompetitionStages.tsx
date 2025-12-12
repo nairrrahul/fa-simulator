@@ -3,7 +3,7 @@ import { useGameStore } from "@renderer/state/gameStore";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import GroupStageTable from "../GroupStageTable";
 import FlagCard from "../FlagCard";
-import { getFixtureSuffixForCompetition, getGroupDisplayOptions, getRoundNameByCompetition } from "../../../../utils/CompetitionFormatUtils";
+import { getCompetitionDrawDate, getFixtureSuffixForCompetition, getGroupDisplayOptions, getMonthName, getRoundNameByCompetition } from "../../../../utils/CompetitionFormatUtils";
 
 interface CompetitionStagesProps {
   competitionId: number;
@@ -28,13 +28,18 @@ export default function CompetitionStages({
     if (!yearData) return [];
     const rounds = new Set<number>();
     fixtures.forEach((fixture) => {
-      rounds.add(fixture.roundID);
+      if(fixture.date) {
+        const fixtDate = new Date(fixture.date);
+        if(year == fixtDate.getFullYear())
+          rounds.add(fixture.roundID);
+      }
     });
     return Array.from(rounds).sort((a, b) => a - b);
   }, [yearData, year]);
 
   const currentRound = availableRounds[selectedRound] || availableRounds[0];
   const competition = getCompetitionById(competitionId);
+  const drawDate = getCompetitionDrawDate(competitionId, competition?.competitionType, year);
 
   // Determine round type
   const roundType = useMemo(() => {
@@ -74,7 +79,10 @@ export default function CompetitionStages({
         <h2 className="text-lg font-semibold text-gray-100 uppercase tracking-wide mb-4 flex items-center justify-between">
           <span>STAGES</span>
         </h2>
-        <p className="text-gray-500 text-sm text-center py-8">No stage data available</p>
+        <p className="text-gray-500 text-sm text-center py-8">
+          Competition to be drawn on<br />
+          {getMonthName(drawDate.month)} {drawDate.day}, {drawDate.year}
+          </p>
       </div>
     );
   }

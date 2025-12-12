@@ -2,6 +2,7 @@ import { FinalsCompetitionJSON, FinalsGroupStageOptions, FinalsGroupStageStruct,
 import finalsCompInfo from '../data/competitions/final_competitions.json'  with { type: 'json' };
 import nlCompInfo from '../data/competitions/nations_league.json'  with { type: 'json' };
 import qualifiersCompInfo from '../data/competitions/qualifying_competitions.json'  with { type: 'json' };
+import { GameDate } from 'src/common/gameState.interfaces';
 
 const FINALS_JSON = finalsCompInfo as FinalsCompetitionJSON;
 const NL_JSON = nlCompInfo as NationsLeagueJSON;
@@ -114,3 +115,46 @@ export function getGroupDisplayOptions(competitionID, competitionType, roundID) 
       return {};
   }
 }
+
+
+
+export function getCompetitionDrawDate(competitionID, competitionType, year): GameDate {
+
+  switch(competitionType) {
+    //final tournament
+    case 0:
+      return {
+        day: FINALS_JSON.competitions[competitionID].drawDay,
+        month: FINALS_JSON.competitions[competitionID].drawMonth,
+        year: year
+      };
+    case 1:
+      //qualifiers
+      return {
+        day: 0,
+        month: 0,
+        year: 0
+      };
+    case 2:
+      //nations league
+      return {
+        day: NL_JSON.competitions[competitionID].drawDay,
+        month: NL_JSON.competitions[competitionID].drawMonth,
+        year: year
+      };
+    default:
+      return {
+        day: 0,
+        month: 0,
+        year: 0
+      };
+  }
+}
+
+export const getMonthName = (month: number) => {
+    const monthNames = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    return monthNames[month - 1];
+  };

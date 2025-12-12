@@ -3,19 +3,12 @@ import { GlobeAltIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
 import { useGodMode } from "@renderer/state/useGodMode";
 import Logo from "../../../../../resources/faSim.png";
 import { useGameStore } from "@renderer/state/gameStore";
+import { getMonthName } from "../../../../utils/CompetitionFormatUtils";
 
 export default function Topbar(): JSX.Element {
   const { godMode, setGodMode } = useGodMode();
   const { gameDate } = useGameStore();
   const [settingsOpen, setSettingsOpen] = useState(false);
-
-  const getMonthName = (month: number) => {
-    const monthNames = [
-      "January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"
-    ];
-    return monthNames[month - 1];
-  };
 
   return (
     <header className="fixed top-0 left-0 w-full h-24 flex items-center justify-between px-6 bg-[#1A1A22] border-b border-gray-700 z-30">
