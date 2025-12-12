@@ -1,9 +1,10 @@
-import { FinalsCompetitionJSON, FinalsGroupStageOptions, FinalsGroupStageStruct } from 'src/common/competitions.interfaces';
+import { FinalsCompetitionJSON, FinalsGroupStageOptions, FinalsGroupStageStruct, NationsLeagueJSON } from 'src/common/competitions.interfaces';
 import finalsCompInfo from '../data/competitions/final_competitions.json'  with { type: 'json' };
 import nlCompInfo from '../data/competitions/nations_league.json'  with { type: 'json' };
 import qualifiersCompInfo from '../data/competitions/qualifying_competitions.json'  with { type: 'json' };
 
 const FINALS_JSON = finalsCompInfo as FinalsCompetitionJSON;
+const NL_JSON = nlCompInfo as NationsLeagueJSON;
 
 export function getFixtureSuffixForCompetition(
   competitionType: number | undefined,
@@ -26,12 +27,9 @@ export function getFixtureSuffixForCompetition(
       return "";
     case 2:
       //nations league
-      if(roundID == 1) {
-        //placeholder
-        return "League Phase";
-      } else {
-        return "Playoffs";
-      }
+      //we use roundID as a proxy for league when it comes to filtering
+
+      
     default:
       return "Invalid";
   }

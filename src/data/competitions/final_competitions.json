@@ -106,6 +106,220 @@
       "drawMonth": 4,
       "drawDay": 15,
       "startingDate": [6, 10, 2027]
+    },
+    "2": {
+      "rounds": [
+        {
+          "stageName": "Group Stage",
+          "stageType": "GROUPSTAGEREG",
+          "rankingWeight": 35,
+          "groupStageOptions": {
+            "displayOptions": {
+              "1": "green",
+              "2": "green",
+              "3": "yellow"
+            },
+            "numTeams": 24,
+            "numThrough": 16,
+            "numGroups": 6
+          }
+        },
+        {
+          "stageName": "Round of 16",
+          "stageType": "KNOCKOUT",
+          "rankingWeight": 35,
+          "numTeams": 16
+        },
+        {
+          "stageName": "Quarter-Finals",
+          "stageType": "KNOCKOUT",
+          "rankingWeight": 40,
+          "numTeams": 8
+        },
+        {
+          "stageName": "Semi-Finals",
+          "stageType": "KNOCKOUT",
+          "rankingWeight": 40,
+          "numTeams": 4
+        },
+        {
+          "stageName": "Final",
+          "stageType": "KNOCKOUT",
+          "rankingWeight": 40,
+          "numTeams": 2
+        },
+        {
+          "stageName": "Third Place",
+          "stageType": "KNOCKOUT",
+          "rankingWeight": 40,
+          "numTeams": 2
+        }
+      ],
+      "drawYear": 2027,
+      "drawMonth": 4,
+      "drawDay": 13,
+      "startingDate": [6, 12, 2027]
+    },
+    "3": {
+      "rounds": [
+        {
+          "stageName": "Group Stage",
+          "stageType": "GROUPSTAGEREG",
+          "rankingWeight": 35,
+          "groupStageOptions": {
+            "displayOptions": {
+              "1": "green",
+              "2": "green",
+              "3": "yellow"
+            },
+            "numTeams": 24,
+            "numThrough": 16,
+            "numGroups": 6
+          }
+        },
+        {
+          "stageName": "Round of 16",
+          "stageType": "KNOCKOUT",
+          "rankingWeight": 35,
+          "numTeams": 16
+        },
+        {
+          "stageName": "Quarter-Finals",
+          "stageType": "KNOCKOUT",
+          "rankingWeight": 40,
+          "numTeams": 8
+        },
+        {
+          "stageName": "Semi-Finals",
+          "stageType": "KNOCKOUT",
+          "rankingWeight": 40,
+          "numTeams": 4
+        },
+        {
+          "stageName": "Final",
+          "stageType": "KNOCKOUT",
+          "rankingWeight": 40,
+          "numTeams": 2
+        }
+      ],
+      "drawYear": 2028,
+      "drawMonth": 4,
+      "drawDay": 15,
+      "startingDate": [6, 11, 2028]
+    },
+    "4": {
+      "rounds": [
+        {
+          "stageName": "Group Stage",
+          "stageType": "GROUPSTAGEREG",
+          "rankingWeight": 35,
+          "groupStageOptions": {
+            "displayOptions": {
+              "1": "green",
+              "2": "green"
+            },
+            "numTeams": 16,
+            "numThrough": 8,
+            "numGroups": 4
+          }
+        },
+        {
+          "stageName": "Quarter-Finals",
+          "stageType": "KNOCKOUT",
+          "rankingWeight": 35,
+          "numTeams": 8
+        },
+        {
+          "stageName": "Semi-Finals",
+          "stageType": "KNOCKOUT",
+          "rankingWeight": 40,
+          "numTeams": 4
+        },
+        {
+          "stageName": "Final",
+          "stageType": "KNOCKOUT",
+          "rankingWeight": 40,
+          "numTeams": 2
+        }
+      ],
+      "drawYear": 2027,
+      "drawMonth": 4,
+      "drawDay": 11,
+      "startingDate": [6, 20, 2027]
+    },
+    "5": {
+      "rounds": [
+        {
+          "stageName": "Group Stage",
+          "stageType": "GROUPSTAGEREG",
+          "rankingWeight": 35,
+          "groupStageOptions": {
+            "displayOptions": {
+              "1": "green",
+              "2": "green"
+            },
+            "numTeams": 16,
+            "numThrough": 8,
+            "numGroups": 4
+          }
+        },
+        {
+          "stageName": "Quarter-Finals",
+          "stageType": "KNOCKOUT",
+          "rankingWeight": 35,
+          "numTeams": 8
+        },
+        {
+          "stageName": "Semi-Finals",
+          "stageType": "KNOCKOUT",
+          "rankingWeight": 40,
+          "numTeams": 4
+        },
+        {
+          "stageName": "Final",
+          "stageType": "KNOCKOUT",
+          "rankingWeight": 40,
+          "numTeams": 2
+        }
+      ],
+      "drawYear": 2028,
+      "drawMonth": 4,
+      "drawDay": 16,
+      "startingDate": [6, 16, 2028]
+    },
+    "6": {
+      "rounds": [
+        {
+          "stageName": "Group Stage",
+          "stageType": "GROUPSTAGEREG",
+          "rankingWeight": 35,
+          "groupStageOptions": {
+            "displayOptions": {
+              "1": "green",
+              "2": "green"
+            },
+            "numTeams": 8,
+            "numThrough": 4,
+            "numGroups": 2
+          }
+        },
+        {
+          "stageName": "Semi-Finals",
+          "stageType": "KNOCKOUT",
+          "rankingWeight": 40,
+          "numTeams": 4
+        },
+        {
+          "stageName": "Final",
+          "stageType": "KNOCKOUT",
+          "rankingWeight": 40,
+          "numTeams": 2
+        }
+      ],
+      "drawYear": 2028,
+      "drawMonth": 4,
+      "drawDay": 8,
+      "startingDate": [6, 9, 2028]
     }
   }
 }

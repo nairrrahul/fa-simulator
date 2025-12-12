@@ -1,122 +1,174 @@
 {
   "relativeYear": 2026,
-  "7": {
-    "divisions": [
-      {
-        "divisionName": "League A",
-        "numGroups": 4,
-        "numTeams": 16,
-        "leagueOptions": {
-          "numKO": 1,
-          "numUp": 0,
-          "numDown": 1,
-          "displayOptions": {
-            "1": "green",
-            "4": "red"
+  "competitions": {
+    "7": {
+      "divisions": [
+        {
+          "divisionName": "League A",
+          "stageType": "GROUPSTAGEHA",
+          "numGroups": 4,
+          "numTeams": 16,
+          "rankingWeight": 15,
+          "leagueOptions": {
+            "numKO": 1,
+            "numUp": 0,
+            "numDown": 1,
+            "displayOptions": {
+              "1": "green",
+              "4": "red"
+            }
+          }
+        },
+        {
+          "divisionName": "League B",
+          "stageType": "GROUPSTAGEHA",
+          "numGroups": 4,
+          "numTeams": 16,
+          "rankingWeight": 15,
+          "leagueOptions": {
+            "numKO": 0,
+            "numUp": 1,
+            "numDown": 1,
+            "displayOptions": {
+              "1": "green",
+              "4": "red"
+            }
+          }
+        },
+        {
+          "divisionName": "League C",
+          "stageType": "GROUPSTAGEHA",
+          "numGroups": 2, 
+          "numTeams": 8,
+          "rankingWeight": 15,
+          "leagueOptions": {
+            "numKO": 0,
+            "numUp": 2,
+            "numDown": 0,
+            "displayOptions": {
+              "1": "green",
+              "2": "green"
+            }
           }
         }
-      },
-      {
-        "divisionName": "League B",
-        "numGroups": 4,
-        "numTeams": 16,
-        "leagueOptions": {
-          "numKO": 0,
-          "numUp": 1,
-          "numDown": 1,
-          "displayOptions": {
-            "1": "green",
-            "4": "red"
+      ],
+      "knockoutRounds": [
+        {
+          "roundName": "Semi-Finals",
+          "numTeams": 4,
+          "rankingWeight": 25,
+          "stageType": "KNOCKOUT"
+        },
+        {
+          "roundName": "Finals",
+          "numTeams": 2,
+          "rankingWeight": 25,
+          "stageType": "KNOCKOUT"
+        },
+        {
+          "roundName": "Third Place",
+          "numTeams": 2,
+          "rankingWeight": 25,
+          "stageType": "KNOCKOUT"
+        }
+      ],
+      "drawYear": 2026,
+      "drawMonth": 8,
+      "drawDay": 4,
+      "groupWindows": [[9, 2026], [10, 2026], [11, 2026]],
+      "knockoutWindow": [3, 2027]
+    },
+    "8": {
+      "divisions": [
+        {
+          "divisionName": "League A",
+          "stageType": "GROUPSTAGEHA",
+          "rankingWeight": 15,
+          "numGroups": 4,
+          "numTeams": 16,
+          "leagueOptions": {
+            "numKO": 1,
+            "numUp": 0,
+            "numDown": 1,
+            "displayOptions": {
+              "1": "green",
+              "4": "red"
+            }
+          }
+        },
+        {
+          "divisionName": "League B",
+          "stageType": "GROUPSTAGEHA",
+          "rankingWeight": 15,
+          "numGroups": 4,
+          "numTeams": 16,
+          "leagueOptions": {
+            "numKO": 0,
+            "numUp": 1,
+            "numDown": 1,
+            "displayOptions": {
+              "1": "green",
+              "4": "red"
+            }
+          }
+        },
+        {
+          "divisionName": "League C",
+          "stageType": "GROUPSTAGEHA",
+          "rankingWeight": 15,
+          "numGroups": 4,
+          "numTeams": 16,
+          "leagueOptions": {
+            "numKO": 0,
+            "numUp": 1,
+            "numDown": 1,
+            "displayOptions": {
+              "1": "green",
+              "4": "red"
+            }
+          }
+        },
+        {
+          "divisionName": "League D",
+          "stageType": "GROUPSTAGEHA",
+          "rankingWeight": 15,
+          "numGroups": 4,
+          "numTeams": 16,
+          "leagueOptions": {
+            "numKO": 0,
+            "numUp": 1,
+            "numDown": 1,
+            "displayOptions": {
+              "1": "green"
+            }
           }
         }
-      },
-      {
-        "divisionName": "League C",
-        "numGroups": 2, 
-        "numTeams": 8,
-        "leagueOptions": {
-          "numKO": 0,
-          "numUp": 2,
-          "numDown": 0,
-          "displayOptions": {
-            "1": "green",
-            "2": "green"
-          }
+      ],
+      "knockoutRounds": [
+        {
+          "roundName": "Semi-Finals",
+          "numTeams": 4,
+          "rankingWeight": 25,
+          "stageType": "KNOCKOUT"
+        },
+        {
+          "roundName": "Finals",
+          "numTeams": 2,
+          "rankingWeight": 25,
+          "stageType": "KNOCKOUT"
+        },
+        {
+          "roundName": "Third Place",
+          "numTeams": 2,
+          "rankingWeight": 25,
+          "stageType": "KNOCKOUT"
         }
-      }
-    ],
-    "groupWeight": 15,
-    "finalsWeight": 25,
-    "drawYear": "2026",
-    "drawMonth": "8",
-    "drawDay": "4",
-    "groupWindows": [[9, 2026], [10, 2026], [11, 2026]],
-    "knockoutWindow": [3, 2027]
-  },
-  "8": {
-    "divisions": [
-      {
-        "divisionName": "League A",
-        "numGroups": 4,
-        "numTeams": 16,
-        "leagueOptions": {
-          "numKO": 1,
-          "numUp": 0,
-          "numDown": 1,
-          "displayOptions": {
-            "1": "green",
-            "4": "red"
-          }
-        }
-      },
-      {
-        "divisionName": "League B",
-        "numGroups": 4,
-        "numTeams": 16,
-        "leagueOptions": {
-          "numKO": 0,
-          "numUp": 1,
-          "numDown": 1,
-          "displayOptions": {
-            "1": "green",
-            "4": "red"
-          }
-        }
-      },
-      {
-        "divisionName": "League C",
-        "numGroups": 4,
-        "numTeams": 16,
-        "leagueOptions": {
-          "numKO": 0,
-          "numUp": 1,
-          "numDown": 1,
-          "displayOptions": {
-            "1": "green",
-            "4": "red"
-          }
-        }
-      },
-      {
-        "divisionName": "League D",
-        "numGroups": 4,
-        "numTeams": 16,
-        "leagueOptions": {
-          "numKO": 0,
-          "numUp": 1,
-          "numDown": 1,
-          "displayOptions": {
-            "1": "green"
-          }
-        }
-      }
-    ],
-    "groupWeight": 15,
-    "finalsWeight": 25,
-    "drawYear": "2026",
-    "drawMonth": "8",
-    "drawDay": "5",
-    "groupWindows": [[9, 2026], [10, 2026], [11, 2026]],
-    "knockoutWindow": [3, 2027]
+      ],
+      "drawYear": 2026,
+      "drawMonth": 8,
+      "drawDay": 4,
+      "groupWindows": [[9, 2026], [10, 2026], [11, 2026]],
+      "knockoutWindow": [3, 2027]
+    }
   }
 }
