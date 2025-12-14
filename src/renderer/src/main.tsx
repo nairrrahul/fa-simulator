@@ -13,6 +13,7 @@ import CompetitionSearchPage from './pages/CompetitionSearchPage'
 import CompetitionFinalsPage from './pages/CompetitionFinalsStage'
 import CompetitionPastWinnersPage from './pages/CompetitionPastWinnersPage'
 import CompetitionNationsLeaguePage from './pages/CompetitionNationsLeaguePage'
+import CompetitionNLDivisionHistoryPage from './pages/CompetitionNLDivisionHistoryPage'
 import CalendarPage from './pages/CalendarPage'
 
 
@@ -30,6 +31,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/competition/finals/:competitionId/:year" element={<CompetitionFinalsPage />} />
           <Route path="/competition/past-winners/:competitionId" element={<CompetitionPastWinnersPage />} />
           <Route path="/competition/nations-league/:competitionId/:year" element={<CompetitionNationsLeaguePage />} />
+          <Route path="/competition/nations-league-history/:competitionId" element={<CompetitionNLDivisionHistoryPage />} />
           <Route path="/calendar" element={<CalendarPage />} />
         </Routes>
       </Layout>

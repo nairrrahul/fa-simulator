@@ -1,4 +1,5 @@
 import { JSX, useMemo } from "react";
+import { Link } from "react-router-dom";
 import { useGameStore } from "@renderer/state/gameStore";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import FlagCard from "../FlagCard";
@@ -31,11 +32,13 @@ export default function CompetitionNLDivisions({ competitionId, year }: Competit
 
   return (
     <div className="bg-[#13131A] rounded-lg p-6 border border-gray-700">
-      <h2 
-        className="text-lg font-semibold text-cyan-400 uppercase tracking-wide mb-4 cursor-pointer hover:text-cyan-300 transition-colors"
-      >
-        Division Overview <ChevronRightIcon className="w-4 h-4 inline" />
-      </h2>
+      <Link to={`/competition/nations-league-history/${competitionId}`}>
+        <h2 
+          className="text-lg font-semibold text-cyan-400 uppercase tracking-wide mb-4 cursor-pointer hover:text-cyan-300 transition-colors"
+        >
+          Division Overview <ChevronRightIcon className="w-4 h-4 inline" />
+        </h2>
+      </Link>
       
       {divisions.length > 0 ? (
         <div className="space-y-4">
