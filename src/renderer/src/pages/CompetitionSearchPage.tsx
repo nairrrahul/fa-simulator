@@ -89,7 +89,7 @@ export default function CompetitionSearchPage(): JSX.Element {
   };
   
   const handleNameSearchGo = () => {
-    if (selectedCompetition && selectedCompetition.competitionType === 0) {
+    if (selectedCompetition) {
       // Find closest year to current game year, rounding down
       const availableYears = getAvailableYearsForCompetition(selectedCompetition.id)
         .filter(y => y >= 2026);
@@ -101,15 +101,20 @@ export default function CompetitionSearchPage(): JSX.Element {
       const closestYear = availableYears
         .filter(y => y <= currentYear)
         .sort((a, b) => b - a)[0] || availableYears.sort((a, b) => a - b)[0];
-      
-      navigate(`/competition/finals/${selectedCompetition.id}/${closestYear}`);
+      if(selectedCompetition.competitionType === 0)
+        navigate(`/competition/finals/${selectedCompetition.id}/${closestYear}`);
+      else if(selectedCompetition.competitionType == 2)
+        navigate(`/competition/nations-league/${selectedCompetition.id}/${closestYear}`);
     }
   };
   
   const handleDropdownSearchGo = () => {
     const comp = competitions.get(dropdownCompetition!);
-    if (dropdownCompetition != null && dropdownYear && comp && comp.competitionType === 0) {
-      navigate(`/competition/finals/${dropdownCompetition}/${dropdownYear}`);
+    if (dropdownCompetition != null && dropdownYear && comp) {
+      if(comp.competitionType == 0)
+        navigate(`/competition/finals/${dropdownCompetition}/${dropdownYear}`);
+      else if(comp.competitionType == 2)
+        navigate(`/competition/nations-league/${dropdownCompetition}/${dropdownYear}`);
     }
   };
   
@@ -216,13 +221,13 @@ export default function CompetitionSearchPage(): JSX.Element {
                 
                 <button
                   onClick={handleNameSearchGo}
-                  disabled={!selectedCompetition || selectedCompetition.competitionType !== 0}
+                  disabled={!selectedCompetition || selectedCompetition.competitionType % 2 != 0}
                   className={`px-8 py-3 rounded-lg font-medium transition-all ${
-                    selectedCompetition && selectedCompetition.competitionType === 0
+                    selectedCompetition && selectedCompetition.competitionType % 2 == 0
                       ? "bg-cyan-600 hover:bg-cyan-700 text-white cursor-pointer"
                       : "bg-gray-700 text-gray-500 cursor-not-allowed"
                   }`}
-                  title={selectedCompetition && selectedCompetition.competitionType !== 0 ? "Only finals competitions supported" : ""}
+                  title={selectedCompetition && selectedCompetition.competitionType % 2 != 0 ? "Only finals competitions supported" : ""}
                 >
                   Go
                 </button>
@@ -311,17 +316,17 @@ export default function CompetitionSearchPage(): JSX.Element {
             
             <button
               onClick={handleDropdownSearchGo}
-              disabled={dropdownCompetition  == null || !dropdownYear || competitions.get(dropdownCompetition!)?.competitionType !== 0}
+              disabled={dropdownCompetition  == null || !dropdownYear || competitions.get(dropdownCompetition!)?.competitionType! % 2 !== 0}
               className={`w-full py-3 px-6 rounded-lg font-medium transition-all ${
-                dropdownCompetition != null && dropdownYear && competitions.get(dropdownCompetition)?.competitionType === 0
+                dropdownCompetition != null && dropdownYear && competitions.get(dropdownCompetition)?.competitionType! % 2 === 0
                   ? "bg-cyan-600 hover:bg-cyan-700 text-white cursor-pointer"
                   : "bg-gray-700 text-gray-500 cursor-not-allowed"
               }`}
-              title={dropdownCompetition != null && competitions.get(dropdownCompetition)?.competitionType !== 0 ? "Only finals competitions supported" : ""}
+              title={dropdownCompetition != null && competitions.get(dropdownCompetition)?.competitionType! % 2 !== 0 ? "Only finals competitions supported" : ""}
             >
-              {dropdownCompetition != null && dropdownYear && competitions.get(dropdownCompetition)?.competitionType === 0
+              {dropdownCompetition != null && dropdownYear && competitions.get(dropdownCompetition)?.competitionType! % 2 === 0
                 ? "View Competition"
-                : dropdownCompetition != null && competitions.get(dropdownCompetition)?.competitionType !== 0
+                : dropdownCompetition != null && competitions.get(dropdownCompetition)?.competitionType! % 2 !== 0
                 ? "Only finals competitions supported"
                 : "Select Competition and Year"}
             </button>

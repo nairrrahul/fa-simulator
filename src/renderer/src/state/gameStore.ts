@@ -415,7 +415,9 @@ export const useGameStore = create<GameState>((set, get) => ({
     
     // For nations league (type 2), return empty for now
     if (competition.competitionType === 2) {
-      return [];
+      const yearMap = get().competitionYearData.get(competitionId);
+      if (!yearMap) return [];
+      return Array.from(yearMap.keys()).sort((a, b) => b - a);
     }
     
     return [];

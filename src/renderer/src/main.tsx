@@ -12,6 +12,7 @@ import NationFixturesPage from './pages/NationFixturesPage'
 import CompetitionSearchPage from './pages/CompetitionSearchPage'
 import CompetitionFinalsPage from './pages/CompetitionFinalsStage'
 import CompetitionPastWinnersPage from './pages/CompetitionPastWinnersPage'
+import CompetitionNationsLeaguePage from './pages/CompetitionNationsLeaguePage'
 
 
 createRoot(document.getElementById('root')!).render(
@@ -27,6 +28,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/competition-search" element={<CompetitionSearchPage />} />
           <Route path="/competition/finals/:competitionId/:year" element={<CompetitionFinalsPage />} />
           <Route path="/competition/past-winners/:competitionId" element={<CompetitionPastWinnersPage />} />
+          <Route path="/competition/nations-league/:competitionId/:year" element={<CompetitionNationsLeaguePage />} />
         </Routes>
       </Layout>
     </BrowserRouter>

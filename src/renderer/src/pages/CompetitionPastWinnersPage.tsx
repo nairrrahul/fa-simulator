@@ -39,7 +39,10 @@ export default function CompetitionPastWinnersPage(): JSX.Element {
       .filter(y => y <= currentYear)
       .sort((a, b) => b - a)[0] || availableYears.sort((a, b) => a - b)[0];
     
-    navigate(`/competition/finals/${competition.id}/${closestYear}`);
+    if(competition.competitionType == 0)
+      navigate(`/competition/finals/${competition.id}/${closestYear}`);
+    else if(competition.competitionType == 2)
+      navigate(`/competition/nations-league/${competition.id}/${closestYear}`);
   };
 
   const getNation = (nationId: number | null) => {
