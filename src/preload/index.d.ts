@@ -16,6 +16,7 @@ declare global {
         competitionHosts: CompetitionHost[];
         competitionSnapshots: CompetitionSnapshot[];
         competitionQualified: CompetitionQualified[];
+        nlGroups: NLGroup[];
       }>;
       saveGameData: (data: { 
         nations: Nation[];

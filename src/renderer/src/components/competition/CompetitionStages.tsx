@@ -16,7 +16,7 @@ export default function CompetitionStages({
   year,
   getRoundTypeByCompetition 
 }: CompetitionStagesProps): JSX.Element {
-    const { getCompetitionYearData, getCompetitionGroupStandings, fixtures, nations, getCompetitionById  } = useGameStore();
+  const { getCompetitionYearData, getCompetitionGroupStandings, nations, getCompetitionById } = useGameStore();
   const [selectedRound, setSelectedRound] = useState<number>(0);
 
   const yearData = useMemo(() => {
@@ -27,12 +27,13 @@ export default function CompetitionStages({
   const availableRounds = useMemo(() => {
     if (!yearData) return [];
     const rounds = new Set<number>();
-    fixtures.forEach((fixture) => {
-      if(fixture.date) {
-        const fixtDate = new Date(fixture.date);
-        if(year == fixtDate.getFullYear())
-          rounds.add(fixture.roundID);
-      }
+    yearData.groups.forEach((teams) => {
+      teams.forEach(team => {
+        // Only include teams from this specific year
+        if (team.year === year) {
+          rounds.add(team.roundID);
+        }
+      });
     });
     return Array.from(rounds).sort((a, b) => a - b);
   }, [yearData, year]);
@@ -64,14 +65,15 @@ export default function CompetitionStages({
     return Array.from(groupsInRound).sort((a, b) => a - b);
   }, [yearData, selectedRound, availableRounds, currentRound, roundType, year]);
 
-  // Get fixtures for knockout/home-away rounds
+  // Get fixtures for knockout/home-away rounds (across all years in this edition)
   const roundFixtures = useMemo(() => {
     if (roundType !== "KNOCKOUT" && roundType !== "HOMEAWAY") return [];
     
-    return Array.from(fixtures.values())
-      .filter(f => f.competitionID === competitionId && f.roundID === currentRound)
+    const { getFixturesByCompetitionEdition } = useGameStore.getState();
+    return getFixturesByCompetitionEdition(competitionId, year)
+      .filter(f => f.roundID === currentRound)
       .sort((a, b) => a.id - b.id);
-  }, [fixtures, competitionId, currentRound, roundType]);
+  }, [competitionId, year, currentRound, roundType]);
 
   if (!yearData || availableRounds.length === 0) {
     return (
@@ -111,9 +113,9 @@ export default function CompetitionStages({
         {(roundType === "GROUPSTAGEREG" || roundType === "GROUPSTAGEHA") && (
           <>
             {roundGroups.map(groupId => {
-              // Filter standings to only include teams from the current round
+              // Filter standings to only include teams from the current round AND current year
               const allStandings = getCompetitionGroupStandings(competitionId, year, groupId);
-              const roundStandings = allStandings.filter(team => team.roundID === currentRound);
+              const roundStandings = allStandings.filter(team => team.roundID === currentRound && team.year === year);
               
               return (
                 <GroupStageTable

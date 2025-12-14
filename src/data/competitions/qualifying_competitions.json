@@ -1,0 +1,63 @@
+{
+  "relativeYear": 2026,
+  "competitions": {
+    "9": {
+      "hostAutoQual": true,
+      "fifaMemberRequired": true,
+      "rounds": [
+        {
+          "stageName": "Round One",
+          "stageType": "HOMEAWAY",
+          "rankingWeight": 25,
+          "progOptions": [
+            {
+              "numIn": -1,
+              "numOut": -1,
+              "compTo": 9,
+              "stageTo": 2
+            }
+          ]
+        },
+        {
+          "stageName": "Round Two",
+          "stageType": "GROUPSTAGEHA",
+          "rankingWeight": 25,
+          "progOptions": []
+        }
+      ]
+    },
+    "10": {
+
+    },
+    "11": {
+
+    },
+    "12": {
+
+    },
+    "13": {
+
+    },
+    "14": {
+
+    },
+    "15": {
+
+    },
+    "16": {
+
+    },
+    "17": {
+
+    },
+    "18": {
+
+    },
+    "19": {
+
+    },
+    "20": {
+
+    }
+  }
+}

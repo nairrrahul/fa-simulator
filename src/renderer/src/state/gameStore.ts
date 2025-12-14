@@ -7,7 +7,9 @@ import {
   CompetitionHost,
   CompetitionSnapshot,
   CompetitionQualified,
-  CompetitionYearData
+  CompetitionYearData,
+  NLGroup,
+  NLDivisionData
 } from 'src/common/gameState.interfaces';
 import { create } from 'zustand';
 
@@ -24,6 +26,7 @@ interface GameState {
   knockoutMappings: Map<number, KOMapping>;
   // Competition data organized by competitionID -> year -> data
   competitionYearData: Map<number, Map<number, CompetitionYearData>>;
+  nlDivisions: Map<number, Map<number, Map<number, NLDivisionData>>>;
   gameDate: GameDate;
   isLoaded: boolean;
   
@@ -37,7 +40,8 @@ interface GameState {
     competitionGroups: CompetitionGroup[],
     competitionHosts: CompetitionHost[],
     competitionSnapshots: CompetitionSnapshot[],
-    competitionQualified: CompetitionQualified[]
+    competitionQualified: CompetitionQualified[],
+    nlGroups: NLGroup[]
   }) => void;
   updateNation: (id: number, updates: Partial<Nation>) => void;
   updateRankingPoints: (id: number, points: number) => void;
@@ -54,6 +58,7 @@ interface GameState {
   
   // Helper getters
   getFixturesByCompetition: (competitionId: number) => Fixture[];
+  getFixturesByCompetitionEdition: (competitionId: number, editionYear: number) => Fixture[];
   getFixturesByNation: (nationId: number) => Fixture[];
   getCompletedFixturesByNation: (nationId: number) => Fixture[];
   getUpcomingFixturesByNation: (nationId: number) => Fixture[];
@@ -69,6 +74,9 @@ interface GameState {
   getCompletedYearsForCompetition: (competitionId: number) => number[];
   getActiveOrUpcomingYearsForCompetition: (competitionId: number) => number[];
   isCompetitionCompleted: (competitionId: number, year: number) => boolean;
+  getNLDivisions: (competitionId: number, year: number) => Map<number, NLDivisionData> | undefined;
+  getNLTeamsInDivision: (competitionId: number, year: number, division: number) => number[];
+  getNLTeamsInPot: (competitionId: number, year: number, division: number, potId: number) => number[];
 }
 
 export const useGameStore = create<GameState>((set, get) => ({
@@ -77,6 +85,7 @@ export const useGameStore = create<GameState>((set, get) => ({
   knockoutMappings: new Map(),
   competitions: new Map(),
   competitionYearData: new Map(),
+  nlDivisions: new Map(),
   gameDate: { year: 2026, month: 1, day: 1 },
   isLoaded: false,
   
@@ -88,59 +97,77 @@ export const useGameStore = create<GameState>((set, get) => ({
     // Organize competition data by competitionID -> year
     const competitionYearData = new Map<number, Map<number, CompetitionYearData>>();
     
+    // Helper function to ensure year entry exists
+    const ensureYearEntry = (competitionID: number, year: number) => {
+      if (!competitionYearData.has(competitionID)) {
+        competitionYearData.set(competitionID, new Map());
+      }
+      const yearMap = competitionYearData.get(competitionID)!;
+      
+      if (!yearMap.has(year)) {
+        yearMap.set(year, {
+          year,
+          hosts: [],
+          groups: new Map(),
+          snapshot: null,
+          qualifiedTeams: [],
+          fixtureYears: new Set()
+        });
+      }
+      return yearMap.get(year)!;
+    };
+    
+    // For qualifiers, determine edition year from parent competition
+    const getEditionYear = (competitionID: number, fixtureYear: number): number => {
+      const competition = competitionsMap.get(competitionID);
+      
+      // For qualifiers (type 1), use parent competition's closest edition
+      if (competition?.competitionType === 1 && competition.parentCompetition !== -1) {
+        // Look at parent competition hosts to find which edition this qualifier belongs to
+        const parentHosts = data.competitionHosts
+          .filter(h => h.competitionID === competition.parentCompetition)
+          .map(h => h.year)
+          .sort((a, b) => a - b);
+        
+        // Find the first parent edition year >= fixture year (qualifiers lead up to finals)
+        const editionYear = parentHosts.find(y => y >= fixtureYear) || fixtureYear;
+        return editionYear;
+      }
+      
+      // For finals and Nations League, fixture year IS the edition year
+      return fixtureYear;
+    };
+    
+    // Pre-populate years from fixtures with proper edition mapping
+    data.fixtures.forEach(fixture => {
+      if (fixture.date) {
+        const fixtureYear = new Date(fixture.date).getFullYear();
+        const editionYear = getEditionYear(fixture.competitionID, fixtureYear);
+        const yearData = ensureYearEntry(fixture.competitionID, editionYear);
+        yearData.fixtureYears.add(fixtureYear);
+      }
+    });
+    
+    // Pre-populate years from competition groups (year field is edition year)
+    data.competitionGroups.forEach(group => {
+      ensureYearEntry(group.competitionID, group.year);
+    });
+    
+    // Pre-populate years from NL groups (year field is edition year)
+    data.nlGroups.forEach(nlGroup => {
+      ensureYearEntry(nlGroup.competitionID, nlGroup.year);
+    });
+    
     // Process hosts
     data.competitionHosts.forEach(host => {
-      if (!competitionYearData.has(host.competitionID)) {
-        competitionYearData.set(host.competitionID, new Map());
-      }
-      const yearMap = competitionYearData.get(host.competitionID)!;
-      
-      if (!yearMap.has(host.year)) {
-        yearMap.set(host.year, {
-          year: host.year,
-          hosts: [],
-          groups: new Map(),
-          snapshot: null,
-          qualifiedTeams: []
-        });
-      }
-      yearMap.get(host.year)!.hosts.push(host.hostID);
-    });
-
-    //we need to fill host data for legacy comps - this is a visual fix for the competition winners page
-    data.competitionSnapshots.forEach(sshot => {
-      const yearMap = competitionYearData.get(sshot.competitionID)!;
-      if(!yearMap.has(sshot.year)) {
-        yearMap.set(sshot.year, {
-          year: sshot.year,
-          hosts: [],
-          groups: new Map(),
-          snapshot: null,
-          qualifiedTeams: []
-        });
-      }
-
-      yearMap.get(sshot.year)!.hosts.push(sshot.host);
+      const yearData = ensureYearEntry(host.competitionID, host.year);
+      yearData.hosts.push(host.hostID);
     });
     
     // Process groups
     data.competitionGroups.forEach(group => {
-      if (!competitionYearData.has(group.competitionID)) {
-        competitionYearData.set(group.competitionID, new Map());
-      }
-      const yearMap = competitionYearData.get(group.competitionID)!;
+      const yearData = ensureYearEntry(group.competitionID, group.year);
       
-      if (!yearMap.has(group.year)) {
-        yearMap.set(group.year, {
-          year: group.year,
-          hosts: [],
-          groups: new Map(),
-          snapshot: null,
-          qualifiedTeams: []
-        });
-      }
-      
-      const yearData = yearMap.get(group.year)!;
       if (!yearData.groups.has(group.groupID)) {
         yearData.groups.set(group.groupID, []);
       }
@@ -156,40 +183,47 @@ export const useGameStore = create<GameState>((set, get) => ({
       if (processedSnapshots.has(key)) return;
       processedSnapshots.add(key);
       
-      if (!competitionYearData.has(snapshot.competitionID)) {
-        competitionYearData.set(snapshot.competitionID, new Map());
-      }
-      const yearMap = competitionYearData.get(snapshot.competitionID)!;
-      
-      if (!yearMap.has(snapshot.year)) {
-        yearMap.set(snapshot.year, {
-          year: snapshot.year,
-          hosts: [],
-          groups: new Map(),
-          snapshot: null,
-          qualifiedTeams: []
-        });
-      }
-      yearMap.get(snapshot.year)!.snapshot = snapshot;
+      const yearData = ensureYearEntry(snapshot.competitionID, snapshot.year);
+      yearData.snapshot = snapshot;
     });
     
     // Process qualified teams
     data.competitionQualified.forEach(qualified => {
-      if (!competitionYearData.has(qualified.competitionID)) {
-        competitionYearData.set(qualified.competitionID, new Map());
+      const yearData = ensureYearEntry(qualified.competitionID, qualified.year);
+      yearData.qualifiedTeams.push(qualified.teamID);
+    });
+    
+    // Process Nations League divisions
+    const nlDivisions = new Map<number, Map<number, Map<number, NLDivisionData>>>();
+    
+    data.nlGroups.forEach(nlGroup => {
+      if (!nlDivisions.has(nlGroup.competitionID)) {
+        nlDivisions.set(nlGroup.competitionID, new Map());
       }
-      const yearMap = competitionYearData.get(qualified.competitionID)!;
+      const compMap = nlDivisions.get(nlGroup.competitionID)!;
       
-      if (!yearMap.has(qualified.year)) {
-        yearMap.set(qualified.year, {
-          year: qualified.year,
-          hosts: [],
-          groups: new Map(),
-          snapshot: null,
-          qualifiedTeams: []
+      if (!compMap.has(nlGroup.year)) {
+        compMap.set(nlGroup.year, new Map());
+      }
+      const yearMap = compMap.get(nlGroup.year)!;
+      
+      if (!yearMap.has(nlGroup.division)) {
+        yearMap.set(nlGroup.division, {
+          division: nlGroup.division,
+          teams: [],
+          pots: new Map()
         });
       }
-      yearMap.get(qualified.year)!.qualifiedTeams.push(qualified.teamID);
+      const divisionData = yearMap.get(nlGroup.division)!;
+      
+      // Add team to division
+      divisionData.teams.push(nlGroup.teamID);
+      
+      // Add team to pot
+      if (!divisionData.pots.has(nlGroup.potID)) {
+        divisionData.pots.set(nlGroup.potID, []);
+      }
+      divisionData.pots.get(nlGroup.potID)!.push(nlGroup.teamID);
     });
     
     set({ 
@@ -198,6 +232,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       knockoutMappings: mappingsMap,
       competitions: competitionsMap,
       competitionYearData,
+      nlDivisions,
       gameDate: data.gameStatus,
       isLoaded: true 
     });
@@ -250,6 +285,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     knockoutMappings: new Map(),
     competitions: new Map(),
     competitionYearData: new Map(),
+    nlDivisions: new Map(),
     gameDate: { year: 2026, month: 1, day: 1 },
     isLoaded: false 
   }),
@@ -258,6 +294,19 @@ export const useGameStore = create<GameState>((set, get) => ({
   getFixturesByCompetition: (competitionId) => {
     return Array.from(get().fixtures.values())
       .filter(f => f.competitionID === competitionId);
+  },
+  
+  getFixturesByCompetitionEdition: (competitionId, editionYear) => {
+    const yearData = get().competitionYearData.get(competitionId)?.get(editionYear);
+    if (!yearData) return [];
+    
+    // Get all fixtures from any year that belongs to this edition
+    return Array.from(get().fixtures.values())
+      .filter(f => {
+        if (f.competitionID !== competitionId || !f.date) return false;
+        const fixtureYear = new Date(f.date).getFullYear();
+        return yearData.fixtureYears.has(fixtureYear);
+      });
   },
   
   getFixturesByNation: (nationId) => {
@@ -424,5 +473,20 @@ export const useGameStore = create<GameState>((set, get) => ({
     
     const yearData = get().competitionYearData.get(checkId)?.get(year);
     return yearData?.snapshot !== null && yearData?.snapshot !== undefined;
+  },
+  
+  getNLDivisions: (competitionId: number, year: number) => {
+    return get().nlDivisions.get(competitionId)?.get(year);
+  },
+  
+  getNLTeamsInDivision: (competitionId: number, year: number, division: number) => {
+    const divisions = get().nlDivisions.get(competitionId)?.get(year);
+    return divisions?.get(division)?.teams || [];
+  },
+  
+  getNLTeamsInPot: (competitionId: number, year: number, division: number, potId: number) => {
+    const divisions = get().nlDivisions.get(competitionId)?.get(year);
+    const divisionData = divisions?.get(division);
+    return divisionData?.pots.get(potId) || [];
   }
 }));

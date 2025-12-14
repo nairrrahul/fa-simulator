@@ -34,6 +34,7 @@ export function loadGameData() {
   const competitionHosts = db.prepare('SELECT * FROM COMPETITIONHOSTS').all();
   const competitionSnapshots = db.prepare('SELECT * FROM COMPETITIONSNAPSHOT').all();
   const competitionQualified = db.prepare('SELECT * FROM COMPETITIONQUALIFIED').all();
+  const nlGroups = db.prepare('SELECT * FROM NLGROUPS').all();
   
   // Map database column names to interface property names for fixtures
   const fixtures = fixturesRaw.map((f: any) => ({
@@ -71,7 +72,8 @@ export function loadGameData() {
     competitionGroups,
     competitionHosts,
     competitionSnapshots,
-    competitionQualified
+    competitionQualified,
+    nlGroups
   };
 }
 
@@ -92,7 +94,7 @@ export function saveGameData(data: {
   
   const updateFixture = db.prepare(`
     UPDATE FIXTURES
-    SET team1ID = ?, team2ID = ?, scoreline = ?, outcome = ?, calculateddate = ?
+    SET team1ID = ?, team2ID = ?, scoreline = ?, outcome = ?, date = ?
     WHERE ID = ?
   `);
   

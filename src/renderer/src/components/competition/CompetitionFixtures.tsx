@@ -9,22 +9,15 @@ interface CompetitionFixturesProps {
 }
 
 export default function CompetitionFixtures({ competitionId, year }: CompetitionFixturesProps): JSX.Element {
-  const { fixtures, nations, getCompetitionById } = useGameStore();
+  const { getFixturesByCompetitionEdition, getCompetitionById, nations } = useGameStore();
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
-  // Get all fixtures for this competition AND this specific year
+  // Get all fixtures for this competition EDITION (may span multiple years)
   const competitionFixtures = useMemo(() => {
-    return Array.from(fixtures.values())
-      .filter(f => f.competitionID === competitionId)
+    return getFixturesByCompetitionEdition(competitionId, year)
       .filter(f => f.date !== null)
-      .filter(f => {
-        // Only include fixtures from the specified year
-        if (!f.date) return false;
-        const fixtureYear = new Date(f.date).getFullYear();
-        return fixtureYear === year;
-      })
       .sort((a, b) => new Date(a.date!).getTime() - new Date(b.date!).getTime());
-  }, [fixtures, competitionId, year]);
+  }, [competitionId, year, getFixturesByCompetitionEdition]);
 
   // Get unique dates
   const availableDates = useMemo(() => {

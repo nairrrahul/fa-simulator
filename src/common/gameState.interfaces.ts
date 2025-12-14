@@ -99,11 +99,26 @@ export interface CompetitionYearData {
   hosts: number[]; 
   groups: Map<number, CompetitionGroup[]>;
   snapshot: CompetitionSnapshot | null;
-  qualifiedTeams: number[]; 
+  qualifiedTeams: number[];
+  fixtureYears: Set<number>;
 }
 
 export interface CompetitionQualified {
   competitionID: number;
   year: number;
   teamID: number;
+}
+
+export interface NLGroup {
+  year: number;
+  teamID: number;
+  division: number;
+  competitionID: number;
+  potID: number;
+}
+
+export interface NLDivisionData {
+  division: number;
+  teams: number[];
+  pots: Map<number, number[]>;
 }
