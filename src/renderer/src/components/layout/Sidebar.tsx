@@ -8,6 +8,7 @@ import {
   StarIcon,
   ClockIcon,
   UserPlusIcon,
+  CalendarIcon,
 } from "@heroicons/react/24/outline";
 import { useGodMode } from "../../state/useGodMode";
 import { JSX } from "react";
@@ -42,7 +43,7 @@ export default function Sidebar(): JSX.Element {
         items={[
           { label: "World Rankings", icon: <ChartBarIcon className="w-5 h-5" />, path: "/rankings" },
           { label: "Player Shortlist", icon: <StarIcon className="w-5 h-5" /> },
-          { label: "Tournament History", icon: <ClockIcon className="w-5 h-5" /> },
+          { label: "Calendar", icon: <CalendarIcon className="w-5 h-5" />, path: "/calendar" },
         ]}
       />
 

@@ -1,5 +1,5 @@
 import { JSX } from "react";
-import { TrophyIcon } from "@heroicons/react/24/outline";
+import { ChartBarIcon } from "@heroicons/react/24/outline";
 
 interface WorldRankingCardProps {
   ranking: number;
@@ -23,7 +23,7 @@ export default function WorldRankingCard({ ranking, totalNations, onNavigate }: 
       onClick={onNavigate}
     >
       <div className="flex items-center gap-2 mb-3">
-        <TrophyIcon className="w-5 h-5 text-cyan-400" />
+        <ChartBarIcon className="w-5 h-5 text-cyan-400" />
         <h2 className="text-sm font-medium text-gray-400 uppercase tracking-wide">
           World Ranking
         </h2>
