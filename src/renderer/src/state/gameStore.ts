@@ -77,6 +77,7 @@ interface GameState {
   getNLDivisions: (competitionId: number, year: number) => Map<number, NLDivisionData> | undefined;
   getNLTeamsInDivision: (competitionId: number, year: number, division: number) => number[];
   getNLTeamsInPot: (competitionId: number, year: number, division: number, potId: number) => number[];
+  getCompetitionPeriodicities(): Map<number, number>;
 }
 
 export const useGameStore = create<GameState>((set, get) => ({
@@ -490,5 +491,13 @@ export const useGameStore = create<GameState>((set, get) => ({
     const divisions = get().nlDivisions.get(competitionId)?.get(year);
     const divisionData = divisions?.get(division);
     return divisionData?.pots.get(potId) || [];
+  },
+
+  getCompetitionPeriodicities() {
+    const periodicities = new Map<number, number>();
+    get().competitions.forEach((comp, compID) => {
+      periodicities.set(compID, comp.periodicity);
+    });
+    return periodicities;
   }
 }));

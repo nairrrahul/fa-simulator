@@ -3,6 +3,7 @@ import finalsCompInfo from '../data/competitions/final_competitions.json'  with 
 import nlCompInfo from '../data/competitions/nations_league.json'  with { type: 'json' };
 import qualifiersCompInfo from '../data/competitions/qualifying_competitions.json'  with { type: 'json' };
 import { GameDate } from 'src/common/gameState.interfaces';
+import { N } from 'node_modules/tailwindcss/dist/resolve-config-QUZ9b-Gn.mjs';
 
 const FINALS_JSON = finalsCompInfo as FinalsCompetitionJSON;
 const NL_JSON = nlCompInfo as NationsLeagueJSON;
@@ -152,9 +153,60 @@ export function getCompetitionDrawDate(competitionID, competitionType, year): Ga
 }
 
 export const getMonthName = (month: number) => {
-    const monthNames = [
-      "January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"
-    ];
-    return monthNames[month - 1];
-  };
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  return monthNames[month - 1];
+};
+
+export function getYearDrawDays(year: number, competitionPeriodicities: Map<number, number>) {
+  //finals comps
+  const finalsDrawDays = Object.entries(FINALS_JSON.competitions).filter(([compID, compData]) => {
+    const competitionPeriodicity = competitionPeriodicities.get(Number(compID))!;
+    return (year - compData.drawYear) % competitionPeriodicity === 0;
+  }).map(([compID, compData]) => {
+    return {
+      compID: Number(compID),
+      roundName: null,
+      day: compData.drawDay,
+      month: compData.drawMonth,
+      year: year
+    };
+  });
+
+  console.log("Finals Draw Days:", finalsDrawDays);
+
+  //nations league comps
+  const nationsLeagueDraws = Object.entries(NL_JSON.competitions).flatMap(([compID, compData]) => {
+    const competitionPeriodicity = competitionPeriodicities.get(Number(compID))!;
+    const draws: {compID: number, roundName: string | null, day: number, month: number, year: number}[] = [];
+
+    // Main draw
+    if ((year - compData.drawYear) % competitionPeriodicity === 0) {
+      draws.push({
+        compID: Number(compID),
+        roundName: null,
+        day: compData.drawDay,
+        month: compData.drawMonth,
+        year: year
+      });
+    }
+
+    // Knockout draw
+    if ((year - compData.knockoutDrawYear) % competitionPeriodicity === 0) {
+      draws.push({
+        compID: Number(compID),
+        roundName: "Playoffs",
+        day: compData.knockoutDrawDay,
+        month: compData.knockoutDrawMonth,
+        year: year,
+      });
+    }
+    return draws;
+  });
+
+  //will deal with qualifiers later
+
+  return [...finalsDrawDays, ...nationsLeagueDraws];
+}

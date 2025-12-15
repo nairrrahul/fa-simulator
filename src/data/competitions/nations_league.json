@@ -76,6 +76,9 @@
       "drawMonth": 8,
       "drawDay": 4,
       "groupWindows": [[9, 2026], [10, 2026], [11, 2026]],
+      "knockoutDrawDay": 14,
+      "knockoutDrawMonth": 12,
+      "knockoutDrawYear": 2026,
       "knockoutWindow": [3, 2027]
     },
     "8": {
@@ -168,6 +171,9 @@
       "drawMonth": 8,
       "drawDay": 5,
       "groupWindows": [[9, 2026], [10, 2026], [11, 2026]],
+      "knockoutDrawDay": 10,
+      "knockoutDrawMonth": 12,
+      "knockoutDrawYear": 2026,
       "knockoutWindow": [3, 2027]
     }
   }

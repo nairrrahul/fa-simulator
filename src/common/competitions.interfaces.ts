@@ -69,6 +69,9 @@ export interface NationsLeagueCompetitionStruct {
   drawMonth: number;
   drawDay: number;
   groupWindows: number[][];
+  knockoutDrawDay: number;
+  knockoutDrawMonth: number;
+  knockoutDrawYear: number;
   knockoutWindow: number[];
 }
 
