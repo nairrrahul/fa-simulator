@@ -9,20 +9,95 @@
           "stageName": "Round One",
           "stageType": "HOMEAWAY",
           "rankingWeight": 25,
-          "progOptions": [
-            {
-              "numIn": -1,
-              "numOut": -1,
-              "compTo": 9,
-              "stageTo": 2
-            }
-          ]
+          "progOptions": {
+            "numTeamsIn": -1, 
+            "teamsOut": [
+              {
+                "numTeams": -1,
+                "compId": 9,
+                "roundId": 2
+              }
+            ]
+          },
+          "drawDate": 5,
+          "drawMonth": 8,
+          "drawYear": 2027
         },
         {
           "stageName": "Round Two",
           "stageType": "GROUPSTAGEHA",
           "rankingWeight": 25,
-          "progOptions": []
+          "progOptions": {
+            "numTeamsIn": 40,
+            "numBaseGroups": 10,
+            "hostGroupsChange": false,
+            "displayOptions": {
+              "1": "green",
+              "2": "green"
+            },
+            "teamsOut": [
+              {
+                "hostOutputChange": false,
+                "numTeams": 20,
+                "compId": 9,
+                "roundId": 3
+              }
+            ]
+          },
+          "drawDate": 21,
+          "drawMonth": 10,
+          "drawYear": 2027
+        },
+        {
+          "stageName": "Round Three",
+          "stageType": "GROUPSTAGEHA",
+          "rankingWeight": 25,
+          "progOptions": {
+            "numTeamsIn": 20,
+            "numBaseGroups": 4,
+            "hostGroupsChange": false,
+            "displayOptions": {
+              "1": "green",
+              "2": "green",
+              "3": "yellow"
+            },
+            "teamsOut": [
+              {
+                "hostOutputChange": true,
+                "numTeams": 8,
+                "compId": 0,
+                "roundId": 1
+              },
+              {
+                "hostOutputChange": false,
+                "numTeams": 4,
+                "compId": 9,
+                "roundId": 4
+              }
+            ]
+          },
+          "drawDate": 5,
+          "drawMonth": 8,
+          "drawYear": 2028
+        },
+        {
+          "stageName": "Playoffs",
+          "stageType": "KNOCKOUT",
+          "rankingWeight": 25,
+          "progOptions": {
+            "numTeamsIn": 4, 
+            "numBasePaths": 1,
+            "hostOffset": 0,
+            "teamsOut": [
+              {
+                "compId": 15,
+                "roundId": 1
+              }
+            ]
+          },
+          "drawDate": 15,
+          "drawMonth": 4,
+          "drawYear": 2029
         }
       ]
     },
