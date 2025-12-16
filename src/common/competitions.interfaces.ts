@@ -79,3 +79,85 @@ export interface NationsLeagueJSON {
   relativeYear: number;
   competitions: Record<string, NationsLeagueCompetitionStruct>;
 }
+
+//---qualifiers---
+
+export interface QualifyingStageStruct {
+  hostAutoQual: boolean
+  fifaMemberRequired: boolean;
+  rounds: QualsStageOptions[];
+}
+
+type QualsStageOptions = HomeAwayQualsRound | GroupStageQualsRound | PlayoffQualsRound;
+
+export interface HomeAwayQualsRound {
+  stageName: string;
+  stageType: StageTypes
+  rankingWeight: number;
+  drawDate: number;
+  drawMonth: number;
+  drawYear: number;
+  windows: number[][];
+  progOptions: HomeAwayProgOptions;
+}
+
+export interface HomeAwayProgOptions {
+  numTeamsIn: number;
+  teamsOut: HomeAwayTeamsOut[];
+}
+
+export interface HomeAwayTeamsOut {
+  numTeams: number;
+  compId: number;
+  roundId: number;
+}
+
+export interface GroupStageQualsRound {
+  stageName: string;
+  stageType: StageTypes;
+  rankingWeight: number;
+  drawDate: number;
+  drawMonth: number;
+  drawYear: number;
+  mandatoryWindows: number[][];
+  optionalWindows: number[][];
+  progOptions: GroupStageProgOptions;
+}
+
+export interface GroupStageProgOptions {
+  numTeamsIn: number;
+  numBaseGroups: number;
+  hostGroupsChange: false;
+  displayOptions: Record<string, string>;
+  teamsOut: GroupStageTeamsOut[];
+}
+
+export interface GroupStageTeamsOut {
+  hostOutputChange: boolean;
+  numTeams: number;
+  compId: number;
+  roundId: number;
+}
+
+export interface PlayoffQualsRound {
+  stageName: string;
+  stageType: StageTypes;
+  rankingWeight: number;
+  drawDate: number;
+  drawMonth: number;
+  drawYear: number;
+  windows: number[][];
+  progOptions: PlayoffProgOptions;
+}
+
+export interface PlayoffProgOptions {
+  numTeamsIn: number;
+  numBasePaths: number;
+  hostOffset: number;
+  teamsOut: PlayoffTeamsOut[];
+}
+
+export interface PlayoffTeamsOut {
+  compId: number;
+  roundId: number;
+}

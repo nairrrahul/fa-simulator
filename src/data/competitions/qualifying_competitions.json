@@ -21,7 +21,8 @@
           },
           "drawDate": 5,
           "drawMonth": 8,
-          "drawYear": 2027
+          "drawYear": 2027,
+          "windows": [[10, 2027]]
         },
         {
           "stageName": "Round Two",
@@ -46,7 +47,9 @@
           },
           "drawDate": 21,
           "drawMonth": 10,
-          "drawYear": 2027
+          "drawYear": 2027,
+          "mandatoryWindows": [[11,2027], [3,2028], [6,2028]],
+          "optionalWindows": []
         },
         {
           "stageName": "Round Three",
@@ -78,7 +81,9 @@
           },
           "drawDate": 5,
           "drawMonth": 8,
-          "drawYear": 2028
+          "drawYear": 2028,
+          "mandatoryWindows": [[9,2028], [10,2028], [11,2028], [3,2029]],
+          "optionalWindows": []
         },
         {
           "stageName": "Playoffs",
@@ -97,7 +102,8 @@
           },
           "drawDate": 15,
           "drawMonth": 4,
-          "drawYear": 2029
+          "drawYear": 2029,
+          "windows": [[6, 2029]]
         }
       ]
     },
