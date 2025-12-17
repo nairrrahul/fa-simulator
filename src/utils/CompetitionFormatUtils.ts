@@ -85,7 +85,12 @@ export function getRoundNameByCompetition(competitionID, competitionType, roundI
       return FINALS_JSON.competitions[competitionID].rounds[roundID-1].stageName;
     case 1:
       //qualifiers
-      return "Round One";
+      for(let i=0; i<QUAL_JSON.competitions[competitionID].rounds.length; i++) {
+        if(QUAL_JSON.competitions[competitionID].rounds[i].startingRoundId === roundID) {
+          return QUAL_JSON.competitions[competitionID].rounds[i].stageName;
+        }
+      }
+      return "Unknown";
     case 2:
       //nations league
       const numGroups = NL_JSON.competitions[competitionID].divisions.length;
