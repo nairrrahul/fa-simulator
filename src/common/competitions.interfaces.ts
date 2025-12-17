@@ -39,6 +39,8 @@ export interface FinalsCompetitionJSON {
 
 //---nations league---
 
+
+
 export interface NationsLeagueOptionsStruct {
   numKO: number;
   numUp: number;
@@ -82,6 +84,12 @@ export interface NationsLeagueJSON {
 
 //---qualifiers---
 
+export interface QualifyingStageJSON {
+  relativeYear: number;
+  competitions: Record<string, QualifyingStageStruct>;
+}
+
+
 export interface QualifyingStageStruct {
   hostAutoQual: boolean
   fifaMemberRequired: boolean;
@@ -91,6 +99,7 @@ export interface QualifyingStageStruct {
 type QualsStageOptions = HomeAwayQualsRound | GroupStageQualsRound | PlayoffQualsRound;
 
 export interface HomeAwayQualsRound {
+  startingRoundId: number;
   stageName: string;
   stageType: StageTypes
   rankingWeight: number;
@@ -113,6 +122,7 @@ export interface HomeAwayTeamsOut {
 }
 
 export interface GroupStageQualsRound {
+  startingRoundId: number;
   stageName: string;
   stageType: StageTypes;
   rankingWeight: number;
@@ -126,20 +136,19 @@ export interface GroupStageQualsRound {
 
 export interface GroupStageProgOptions {
   numTeamsIn: number;
-  numBaseGroups: number;
-  hostGroupsChange: false;
-  displayOptions: Record<string, string>;
+  numBaseGroups: number[];
+  displayOptions: Record<string, string | undefined>;
   teamsOut: GroupStageTeamsOut[];
 }
 
 export interface GroupStageTeamsOut {
-  hostOutputChange: boolean;
-  numTeams: number;
+  numOutputTeams: number[];
   compId: number;
   roundId: number;
 }
 
 export interface PlayoffQualsRound {
+  startingRoundId: number
   stageName: string;
   stageType: StageTypes;
   rankingWeight: number;
@@ -152,8 +161,7 @@ export interface PlayoffQualsRound {
 
 export interface PlayoffProgOptions {
   numTeamsIn: number;
-  numBasePaths: number;
-  hostOffset: number;
+  hostOffsetPaths: number[];
   teamsOut: PlayoffTeamsOut[];
 }
 

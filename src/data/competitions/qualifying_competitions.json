@@ -6,6 +6,7 @@
       "fifaMemberRequired": true,
       "rounds": [
         {
+          "startingRoundId": 1,
           "stageName": "Round One",
           "stageType": "HOMEAWAY",
           "rankingWeight": 25,
@@ -25,21 +26,20 @@
           "windows": [[10, 2027]]
         },
         {
+          "startingRoundId": 2,
           "stageName": "Round Two",
           "stageType": "GROUPSTAGEHA",
           "rankingWeight": 25,
           "progOptions": {
             "numTeamsIn": 40,
-            "numBaseGroups": 10,
-            "hostGroupsChange": false,
+            "numBaseGroups": [10, 10, 10, 10],
             "displayOptions": {
               "1": "green",
               "2": "green"
             },
             "teamsOut": [
               {
-                "hostOutputChange": false,
-                "numTeams": 20,
+                "numOutputTeams": [20,20,20,20],
                 "compId": 9,
                 "roundId": 3
               }
@@ -52,13 +52,13 @@
           "optionalWindows": []
         },
         {
+          "startingRoundId": 3,
           "stageName": "Round Three",
           "stageType": "GROUPSTAGEHA",
           "rankingWeight": 25,
           "progOptions": {
             "numTeamsIn": 20,
-            "numBaseGroups": 4,
-            "hostGroupsChange": false,
+            "numBaseGroups": [4,4,4,4],
             "displayOptions": {
               "1": "green",
               "2": "green",
@@ -66,14 +66,12 @@
             },
             "teamsOut": [
               {
-                "hostOutputChange": true,
-                "numTeams": 8,
+                "numOutputTeams": [8,7,6,5],
                 "compId": 0,
                 "roundId": 1
               },
               {
-                "hostOutputChange": false,
-                "numTeams": 4,
+                "numOutputTeams": [4,4,4,4],
                 "compId": 9,
                 "roundId": 4
               }
@@ -86,13 +84,13 @@
           "optionalWindows": []
         },
         {
+          "startingRoundId": 4,
           "stageName": "Playoffs",
           "stageType": "KNOCKOUT",
           "rankingWeight": 25,
           "progOptions": {
             "numTeamsIn": 4, 
-            "numBasePaths": 1,
-            "hostOffset": 0,
+            "hostOffsetPaths": [1,2,2,2],
             "teamsOut": [
               {
                 "compId": 15,
@@ -108,37 +106,546 @@
       ]
     },
     "10": {
-
+      "hostAutoQual": true,
+      "fifaMemberRequired": true,
+      "rounds": [
+        {
+          "startingRoundId": 1,
+          "stageName": "Round One",
+          "stageType": "GROUPSTAGEHA",
+          "rankingWeight": 25,
+          "progOptions": {
+            "numTeamsIn": -1,
+            "numBaseGroups": [9,8,7,6],
+            "displayOptions": {
+              "1": "green",
+              "2": "yellow"
+            },
+            "teamsOut": [
+              {
+                "numOutputTeams": [9,8,7,6],
+                "compId": 0,
+                "roundId": 1
+              },
+              {
+                "numOutputTeams": [4,4,4,4],
+                "compId": 10,
+                "roundId": 2
+              }
+            ]
+          },
+          "drawDate": 5,
+          "drawMonth": 8,
+          "drawYear": 2027,
+          "mandatoryWindows": [[11, 2027], [3, 2028], [6, 2028], [9, 2029], [10, 2029]],
+          "optionalWindows": [[9, 2027], [10, 2027]]
+        },
+        {
+          "startingRoundId": 2,
+          "stageName": "Playoffs",
+          "stageType": "KNOCKOUT",
+          "rankingWeight": 25,
+          "progOptions": {
+            "numTeamsIn": 4,
+            "hostOffsetPaths": [1,2,2,2],
+            "teamsOut": [
+              {
+                "compId": 15,
+                "roundId": 1
+              }
+            ]
+          },
+          "drawDate": 21,
+          "drawMonth": 10,
+          "drawYear": 2029,
+          "windows": [[11, 2029]]
+        }
+      ]
     },
     "11": {
-
+      "hostAutoQual": true,
+      "fifaMemberRequired": true,
+      "rounds": [
+        {
+          "startingRoundId": 1,
+          "stageName": "Group Stage",
+          "stageType": "GROUPSTAGEHA",
+          "rankingWeight": 25,
+          "progOptions": {
+            "numTeamsIn": -1,
+            "numBaseGroups": [12,12,12,12],
+            "displayOptions": {
+              "1": "green",
+              "2": "yellow"
+            },
+            "teamsOut": [
+              {
+                "numOutputTeams": [12,12,12,12],
+                "compId": 0,
+                "roundId": 1
+              },
+              {
+                "numOutputTeams": [12,12,8,4],
+                "compId": 11,
+                "roundId": 2
+              }
+            ]
+          },
+          "drawDate": 8,
+          "drawMonth": 12,
+          "drawYear": 2028,
+          "mandatoryWindows": [[6, 2029], [9, 2029], [10, 2029], [11, 2029]],
+          "optionalWindows": [[3, 2029]]
+        },
+        {
+          "startingRoundId": 2,
+          "stageName": "Playoffs",
+          "stageType": "KNOCKOUT",
+          "rankingWeight": 25,
+          "progOptions": {
+            "numTeamsIn": -1,
+            "hostOffsetPaths": [4,3,2,1],
+            "teamsOut": [
+              {
+                "compId": 0,
+                "roundId": 1
+              }
+            ]
+          },
+          "drawDate": 9,
+          "drawMonth": 12,
+          "drawYear": 2029,
+          "windows": [[3, 2030]]
+        }
+      ]
     },
     "12": {
-
+      "hostAutoQual": true,
+      "fifaMemberRequired": true,
+      "rounds": [
+        {
+          "startingRoundId": 1,
+          "stageName": "Playoff Round",
+          "stageType": "HOMEAWAY",
+          "rankingWeight": 25,
+          "progOptions": {
+            "numTeamsIn": -1, 
+            "teamsOut": [
+              {
+                "numTeams": -1,
+                "compId": 12,
+                "roundId": 2
+              }
+            ]
+          },
+          "drawDate": 9,
+          "drawMonth": 8,
+          "drawYear": 2027,
+          "windows": [[10, 2027]]
+        },
+        {
+          "startingRoundId": 2,
+          "stageName": "Round Two",
+          "stageType": "GROUPSTAGEREG",
+          "rankingWeight": 25,
+          "progOptions": {
+            "numTeamsIn": 30,
+            "numBaseGroups": [6,6,6,6],
+            "displayOptions": {
+              "1": "green",
+              "2": "green"
+            },
+            "teamsOut": [
+              {
+                "numOutputTeams": [12,12,12,12],
+                "compId": 12,
+                "roundId": 3
+              }
+            ]
+          },
+          "drawDate": 18,
+          "drawMonth": 10,
+          "drawYear": 2027,
+          "mandatoryWindows": [[11, 2027], [3, 2028]],
+          "optionalWindows": []
+        },
+        {
+          "startingRoundId": 3,
+          "stageName": "Round Three",
+          "stageType": "GROUPSTAGEHA",
+          "rankingWeight": 25,
+          "progOptions": {
+            "numTeamsIn": 12,
+            "numBaseGroups": [3,3,3,3],
+            "displayOptions": {
+              "1": "green",
+              "2": "yellow"
+            },
+            "teamsOut": [
+              {
+                "numOutputTeams": [6,5,4,3],
+                "compId": 0,
+                "roundId": 1
+              },
+              {
+                "numOutputTeams": [1,2,2,2],
+                "compId": 15,
+                "roundId": 1
+              }
+            ]
+          },
+          "drawDate": 10,
+          "drawMonth": 8,
+          "drawYear": 2029,
+          "mandatoryWindows": [[9, 2029], [10, 2029], [11, 2029]],
+          "optionalWindows": []
+        }
+      ]
     },
     "13": {
-
+      "hostAutoQual": true,
+      "fifaMemberRequired": true,
+      "rounds": [
+        {
+          "startingRoundId": 1,
+          "stageName": "Round Three",
+          "stageType": "GROUPSTAGEHA",
+          "rankingWeight": 25,
+          "progOptions": {
+            "numTeamsIn": -1,
+            "numBaseGroups": [1,1,1,1],
+            "displayOptions": {
+              "1": "green",
+              "2": "green",
+              "3": "green",
+              "4": "green",
+              "5": "yellow",
+              "6": "yellow",
+              "7": "yellow"
+            },
+            "teamsOut": [
+              {
+                "numOutputTeams": [6,5,4,3],
+                "compId": 0,
+                "roundId": 1
+              },
+              {
+                "numOutputTeams": [1,2,2,2],
+                "compId": 15,
+                "roundId": 1
+              }
+            ]
+          },
+          "drawDate": 8,
+          "drawMonth": 8,
+          "drawYear": 2027,
+          "mandatoryWindows": [[9, 2027], [10, 2027], [11, 2027], [9, 2028], [10, 2028], [11, 2028]],
+          "optionalWindows": [[3, 2029], [9, 2029], [10, 2029]]
+        }
+      ]
     },
     "14": {
-
+      "hostAutoQual": true,
+      "fifaMemberRequired": true,
+      "rounds": [
+        {
+          "startingRoundId": 1,
+          "stageName": "Preliminary Playoff",
+          "stageType": "KNOCKOUT",
+          "rankingWeight": 25,
+          "progOptions": {
+            "numTeamsIn": -1,
+            "hostOffsetPaths": [1,1,1,1],
+            "teamsOut": [
+              {
+                "compId": 14,
+                "roundId": 2
+              }
+            ]
+          },
+          "drawDate": 7,
+          "drawMonth": 8,
+          "drawYear": 2028,
+          "windows": [[9, 2028]]
+        },
+        {
+          "startingRoundId": 3,
+          "stageName": "Round Two",
+          "stageType": "GROUPSTAGEHA",
+          "rankingWeight": 25,
+          "progOptions": {
+            "numTeamsIn": 8,
+            "numBaseGroups": [2,2,2,2],
+            "displayOptions": {
+              "1": "green",
+              "2": "green"
+            },
+            "teamsOut": [
+              {
+                "numOutputTeams": [4,4,4,4],
+                "compId": 14,
+                "roundId": 2
+              }
+            ]
+          },
+          "drawDate": 22,
+          "drawMonth": 9,
+          "drawYear": 2028,
+          "mandatoryWindows": [[10, 2028], [11, 2028], [3, 2028]],
+          "optionalWindows": []
+        },
+        {
+          "startingRoundId": 4,
+          "stageName": "Final Stage",
+          "stageType": "GROUPSTAGEHA",
+          "rankingWeight": 25,
+          "progOptions": {
+            "numTeamsIn": 4,
+            "numBaseGroups": [1,1,1,1],
+            "displayOptions": {
+              "1": "green",
+              "2": "yellow"
+            },
+            "teamsOut": [
+              {
+                "numOutputTeams": [1,0,0,0],
+                "compId": 0,
+                "roundId": 1
+              },
+              {
+                "numOutputTeams": [1,2,2,2],
+                "compId": 15,
+                "roundId": 1
+              }
+            ]
+          },
+          "drawDate": 12,
+          "drawMonth": 4,
+          "drawYear": 2029,
+          "mandatoryWindows": [[6, 2029], [9, 2029], [10, 2029]],
+          "optionalWindows": []
+        }
+      ]
     },
     "15": {
-
+      "hostAutoQual": true,
+      "fifaMemberRequired": true,
+      "rounds": [
+        {
+          "startingRoundId": 1,
+          "stageName": "Preliminary Playoff",
+          "stageType": "KNOCKOUT",
+          "rankingWeight": 25,
+          "progOptions": {
+            "numTeamsIn": -1,
+            "hostOffsetPaths": [2,2,2,2],
+            "teamsOut": [
+              {
+                "compId": 0,
+                "roundId": 1
+              }
+            ]
+          },
+          "drawDate": 12,
+          "drawMonth": 12,
+          "drawYear": 2029,
+          "windows": [[3, 2030]]
+        }
+      ]
     },
     "16": {
-
+      "hostAutoQual": true,
+      "fifaMemberRequired": false,
+      "rounds": [
+        {
+          "startingRoundId": 1,
+          "stageName": "Group Stage",
+          "stageType": "GROUPSTAGEHA",
+          "rankingWeight": 25,
+          "progOptions": {
+            "displayOptions": {
+              "1": "green",
+              "2": "green"
+            },
+            "numTeamsIn": -1,
+            "numBaseGroups": [12,12,12,12],
+            "teamsOut": [
+              {
+                "numOutputTeams": [24,23,22,21],
+                "compId": 1,
+                "roundId": 1
+              }
+            ]
+          },
+          "drawDate": 3,
+          "drawMonth": 8,
+          "drawYear": 2026,
+          "mandatoryWindows": [[9, 2026], [10, 2026]],
+          "optionalWindows": [[11, 2026]]
+        }
+      ]
     },
     "17": {
-
+      "hostAutoQual": true,
+      "fifaMemberRequired": false,
+      "rounds": [
+        {
+          "startingRoundId": 1,
+          "stageName": "Playoff Round",
+          "stageType": "HOMEAWAY",
+          "rankingWeight": 25,
+          "progOptions": {
+            "numTeamsIn": -1, 
+            "teamsOut": [
+              {
+                "numTeams": -1,
+                "compId": 17,
+                "roundId": 2
+              }
+            ]
+          },
+          "drawDate": 7,
+          "drawMonth": 8,
+          "drawYear": 2026,
+          "windows": [[9, 2026]]
+        },
+        {
+          "startingRoundId": 2,
+          "stageName": "Group Stage",
+          "stageType": "GROUPSTAGEHA",
+          "rankingWeight": 25,
+          "progOptions": {
+            "displayOptions": {
+              "1": "green",
+              "2": "green"
+            },
+            "numTeamsIn": 48,
+            "numBaseGroups": [12,12,12,12],
+            "teamsOut": [
+              {
+                "numOutputTeams": [24,23,22,21],
+                "compId": 2,
+                "roundId": 1
+              }
+            ]
+          },
+          "drawDate": 20,
+          "drawMonth": 9,
+          "drawYear": 2026,
+          "mandatoryWindows": [[10, 2026], [11, 2026], [11, 2026], [3, 2027]],
+          "optionalWindows": []
+        }
+      ]
     },
     "18": {
-
+      "hostAutoQual": true,
+      "fifaMemberRequired": false,
+      "rounds": [
+        {
+          "startingRoundId": 1,
+          "stageName": "Group Stage",
+          "stageType": "GROUPSTAGEHA",
+          "rankingWeight": 25,
+          "progOptions": {
+            "displayOptions": {
+              "1": "green",
+              "2": "green"
+            },
+            "numTeamsIn": -1,
+            "numBaseGroups": [10,10,9,9],
+            "teamsOut": [
+              {
+                "numOutputTeams": [24,23,22,21],
+                "compId": 3,
+                "roundId": 1
+              }
+            ]
+          },
+          "drawDate": 15,
+          "drawMonth": 12,
+          "drawYear": 2026,
+          "mandatoryWindows": [[6, 2027], [9, 2027], [10, 2027], [11, 2027]],
+          "optionalWindows": [[3, 2027]]
+        },
+        {
+          "startingRoundId": 2,
+          "stageName": "Qualifying Playoff",
+          "stageType": "KNOCKOUT",
+          "rankingWeight": 25,
+          "progOptions": {
+            "numTeamsIn": 12,
+            "hostOffsetPaths": [3,3,3,3],
+            "teamsOut": [
+              {
+                "compId": 3,
+                "roundId": 1
+              }
+            ]
+          },
+          "drawDate": 16,
+          "drawMonth": 12,
+          "drawYear": 2027,
+          "windows": [[3, 2028]]
+        }
+      ]
     },
     "19": {
-
+      "hostAutoQual": false,
+      "fifaMemberRequired": false,
+      "rounds": [
+        {
+          "startingRoundId": 1,
+          "stageName": "Playoff Round",
+          "stageType": "HOMEAWAY",
+          "rankingWeight": 25,
+          "progOptions": {
+            "numTeamsIn": 16, 
+            "teamsOut": [
+              {
+                "numTeams": 8,
+                "compId": 4,
+                "roundId": 1
+              }
+            ]
+          },
+          "drawDate": 17,
+          "drawMonth": 12,
+          "drawYear": 2026,
+          "windows": [[3, 2027]]
+        }
+      ]
     },
     "20": {
-
+      "hostAutoQual": false,
+      "fifaMemberRequired": false,
+      "rounds": [
+        {
+          "startingRoundId": 1,
+          "stageName": "Round One",
+          "stageType": "GROUPSTAGEHA",
+          "rankingWeight": 25,
+          "progOptions": {
+            "numTeamsIn": 14,
+            "displayOptions": {
+              "1": "green",
+              "2": "green"
+            },
+            "numBaseGroups": [4,4,4,4],
+            "teamsOut": [
+              {
+                "numOutputTeams": [8,8,8,8],
+                "compId": 6,
+                "roundId": 1
+              }
+            ]
+          },
+          "drawDate": 9,
+          "drawMonth": 8,
+          "drawYear": 2027,
+          "mandatoryWindows": [[9, 2027], [10, 2027]],
+          "optionalWindows": [[11, 2027]]
+        }
+      ]
     }
   }
 }

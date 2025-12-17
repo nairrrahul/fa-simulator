@@ -1,12 +1,12 @@
-import { FinalsCompetitionJSON, FinalsGroupStageOptions, FinalsGroupStageStruct, NationsLeagueJSON } from 'src/common/competitions.interfaces';
+import { FinalsCompetitionJSON, QualifyingStageJSON, FinalsGroupStageStruct, NationsLeagueJSON } from 'src/common/competitions.interfaces';
 import finalsCompInfo from '../data/competitions/final_competitions.json'  with { type: 'json' };
 import nlCompInfo from '../data/competitions/nations_league.json'  with { type: 'json' };
 import qualifiersCompInfo from '../data/competitions/qualifying_competitions.json'  with { type: 'json' };
 import { GameDate } from 'src/common/gameState.interfaces';
-import { N } from 'node_modules/tailwindcss/dist/resolve-config-QUZ9b-Gn.mjs';
 
 const FINALS_JSON = finalsCompInfo as FinalsCompetitionJSON;
 const NL_JSON = nlCompInfo as NationsLeagueJSON;
+const QUAL_JSON = qualifiersCompInfo as QualifyingStageJSON;
 
 export function getFixtureSuffixForCompetition(
   competitionType: number | undefined,
@@ -26,7 +26,12 @@ export function getFixtureSuffixForCompetition(
       }
     case 1:
       //qualifiers
-      return "";
+      for(let i=0; i<QUAL_JSON.competitions[competitionID].rounds.length; i++) {
+        if(QUAL_JSON.competitions[competitionID].rounds[i].startingRoundId === roundID) {
+          return QUAL_JSON.competitions[competitionID].rounds[i].stageName;
+        }
+      }
+      return "Unknown";
     case 2:
       //nations league
       //we use roundID as a proxy for league when it comes to filtering
@@ -52,6 +57,11 @@ export function getRoundTypeByCompetition(competitionID, competitionType, roundI
       return FINALS_JSON.competitions[competitionID].rounds[roundID-1].stageType;
     case 1:
       //qualifiers
+      for(let i=0; i<QUAL_JSON.competitions[competitionID].rounds.length; i++) {
+        if(QUAL_JSON.competitions[competitionID].rounds[i].startingRoundId === roundID) {
+          return QUAL_JSON.competitions[competitionID].rounds[i].stageType;
+        }
+      }
       return "GROUPSTAGEREG";
     case 2:
       //nations league
@@ -132,9 +142,9 @@ export function getCompetitionDrawDate(competitionID, competitionType, year): Ga
     case 1:
       //qualifiers
       return {
-        day: 0,
-        month: 0,
-        year: 0
+        day: QUAL_JSON.competitions[competitionID].rounds[0].drawDate,
+        month: QUAL_JSON.competitions[competitionID].rounds[0].drawMonth,
+        year: year
       };
     case 2:
       //nations league
@@ -175,8 +185,6 @@ export function getYearDrawDays(year: number, competitionPeriodicities: Map<numb
     };
   });
 
-  console.log("Finals Draw Days:", finalsDrawDays);
-
   //nations league comps
   const nationsLeagueDraws = Object.entries(NL_JSON.competitions).flatMap(([compID, compData]) => {
     const competitionPeriodicity = competitionPeriodicities.get(Number(compID))!;
@@ -208,5 +216,24 @@ export function getYearDrawDays(year: number, competitionPeriodicities: Map<numb
 
   //will deal with qualifiers later
 
-  return [...finalsDrawDays, ...nationsLeagueDraws];
+  const qualifiersDraws = Object.entries(QUAL_JSON.competitions).flatMap(([compID, compData]) => {
+    const competitionPeriodicity = competitionPeriodicities.get(Number(compID))!;
+    const draws: {compID: number, roundName: string | null, day: number, month: number, year: number}[] = [];
+    compData.rounds.forEach((round) => {
+      if((year - round.drawYear) % competitionPeriodicity === 0) {
+        draws.push({
+          compID: Number(compID),
+          roundName: round.stageName,
+          day: round.drawDate,
+          month: round.drawMonth,
+          year: year,
+        });
+      }   
+    });
+    return draws;
+  });
+
+  console.log("Q Draw Days:", qualifiersDraws);
+
+  return [...finalsDrawDays, ...nationsLeagueDraws, ...qualifiersDraws];
 }
