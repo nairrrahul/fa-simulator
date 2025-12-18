@@ -238,7 +238,6 @@ export function getYearDrawDays(year: number, competitionPeriodicities: Map<numb
     return draws;
   });
 
-  console.log("Q Draw Days:", qualifiersDraws);
 
   return [...finalsDrawDays, ...nationsLeagueDraws, ...qualifiersDraws];
 }
