@@ -10,11 +10,12 @@ interface CompetitionQualifiedTeamsProps {
 export default function CompetitionQualifiedTeams({ competitionId, year }: CompetitionQualifiedTeamsProps): JSX.Element {
   const { getCompetitionYearData, nations } = useGameStore();
 
+  //this page is only used on finals competitions, so we will only want teams in round 1
   const qualifiedTeams = useMemo(() => {
     const yearData = getCompetitionYearData(competitionId, year);
     if (!yearData) return [];
     
-    return yearData.qualifiedTeams
+    return yearData.qualifiedTeams[1]
       .map(teamId => nations.find(n => n.id === teamId))
       .filter(Boolean)
       .sort((a, b) => (a?.name || "").localeCompare(b?.name || ""));

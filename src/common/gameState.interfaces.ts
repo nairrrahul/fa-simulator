@@ -99,7 +99,7 @@ export interface CompetitionYearData {
   hosts: number[]; 
   groups: Map<number, CompetitionGroup[]>;
   snapshot: CompetitionSnapshot | null;
-  qualifiedTeams: number[];
+  qualifiedTeams: Record<number, number[]>;
   fixtureYears: Set<number>;
 }
 
@@ -107,6 +107,7 @@ export interface CompetitionQualified {
   competitionID: number;
   year: number;
   teamID: number;
+  roundID: number;
 }
 
 export interface NLGroup {

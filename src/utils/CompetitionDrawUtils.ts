@@ -125,8 +125,8 @@ export function generateHomeAwayFixtures(pairs: [Nation, Nation][], compId: numb
 
   const retFixtures = fixtures.map((fixture, index) => ({
     ...fixture,
-    id: index + 1 //assign unique IDs starting from 1
+    id: index + 1 //assign unique IDs starting from 1, this will function as our increment count when we add to state
   }));
-  
+
   return retFixtures;
 }

@@ -111,7 +111,7 @@ export const useGameStore = create<GameState>((set, get) => ({
           hosts: [],
           groups: new Map(),
           snapshot: null,
-          qualifiedTeams: [],
+          qualifiedTeams: {},
           fixtureYears: new Set()
         });
       }
@@ -191,7 +191,10 @@ export const useGameStore = create<GameState>((set, get) => ({
     // Process qualified teams
     data.competitionQualified.forEach(qualified => {
       const yearData = ensureYearEntry(qualified.competitionID, qualified.year);
-      yearData.qualifiedTeams.push(qualified.teamID);
+      if (!(qualified.roundID in yearData.qualifiedTeams)) {
+        yearData.qualifiedTeams[qualified.roundID] = [];
+      }
+      yearData.qualifiedTeams[qualified.roundID].push(qualified.teamID);
     });
     
     // Process Nations League divisions
