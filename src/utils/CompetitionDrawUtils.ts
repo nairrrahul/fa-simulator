@@ -1,6 +1,17 @@
-import { Nation } from "src/common/gameState.interfaces";
+import { CompetitionGroup, Fixture, Nation } from "src/common/gameState.interfaces";
 import { shuffleArray } from "./RandomGen";
 
+import finalsCompInfo from '../data/competitions/final_competitions.json'  with { type: 'json' };
+import nlCompInfo from '../data/competitions/nations_league.json'  with { type: 'json' };
+import qualifiersCompInfo from '../data/competitions/qualifying_competitions.json'  with { type: 'json' };
+import windowDates from '../data/competitions/confederation_windows.json'  with { type: 'json' };
+import { FinalsCompetitionJSON, HomeAwayQualsRound, NationsLeagueJSON, QualifyingStageJSON } from "../common/competitions.interfaces";
+import { getRoundInfoForCompetition } from "./CompetitionFormatUtils";
+
+const FINALS_JSON = finalsCompInfo as FinalsCompetitionJSON;
+const NL_JSON = nlCompInfo as NationsLeagueJSON;
+const QUAL_JSON = qualifiersCompInfo as QualifyingStageJSON;
+const WINDOW_DATES = windowDates as Record<string, Record<string, number[]>>;
 
 //in continental competitions, we generate pots based on world ranking
 //however, we need to ensure that hosts are always in pot 1
@@ -28,4 +39,94 @@ export function generateContinentalGroups(pots: Nation[][]): Record<number, Nati
     }
   }
   return groups;
+}
+
+export function formatGroups(groups: Record<number, Nation[]>, compId: number, year: number, roundId: number): CompetitionGroup[] {
+  const formattedGroups: CompetitionGroup[] = [];
+  for(const [groupId, nations] of Object.entries(groups)) {
+    for(const nation of nations) {
+      formattedGroups.push({
+        competitionID: compId,
+        year: year,
+        groupID: parseInt(groupId),
+        teamID: nation.id,
+        gamesPlayed: 0,
+        wins: 0,
+        draws: 0,
+        losses: 0,
+        goalsFor: 0,
+        goalsAgainst: 0,
+        roundID: roundId
+      });
+    }
+  }
+  return formattedGroups;
+}
+
+export function generateHomeAwayPairs(teams: Nation[]): [Nation, Nation][] {
+  //we can assume team len is == 2
+  teams.sort((a, b) => a.rankingPts - b.rankingPts);
+  const mid = Math.ceil(teams.length / 2);
+  const firstHalf = shuffleArray(teams.slice(0, mid));
+  const secondHalf = shuffleArray(teams.slice(mid));
+
+  const pairs: [Nation, Nation][] = [];
+  for (let i = 0; i < firstHalf.length; i++) {
+    pairs.push([firstHalf[i], secondHalf[secondHalf.length - 1 - i]]);
+  }
+  return pairs;
+
+}
+
+
+export function generateHomeAwayFixtures(pairs: [Nation, Nation][], compId: number, year: number, roundId: number): Fixture[] {
+  const fixtures: Fixture[] = [];
+  // get window
+  const roundInfo = getRoundInfoForCompetition(compId, 2, roundId) as HomeAwayQualsRound;
+  const window = roundInfo.windows[0];
+  // check confederation ID of all teams
+  const allConfedsSame = pairs.flat().every(team => team.confederationID === pairs[0][0].confederationID);
+  let dates: number[][] = [];
+  // if all from same confed, get window dates from confed, else use FIFA window dates
+  if(allConfedsSame) {
+    let initDates = WINDOW_DATES[pairs[0][0].confederationID.toString()][window[0].toString()];
+    dates = [[initDates[0], window[0], year], [initDates[1], window[0], year]];
+  } else {
+    let initDates = WINDOW_DATES["0"][window[0].toString()];
+    dates = [[initDates[0], window[0], year], [initDates[1], window[0], year]];
+  }
+  // generate pairs of fixtures with each pair in pairs
+  for(const [teamA, teamB] of pairs) {
+    // first leg
+    fixtures.splice(0, 0, {
+      id: -1,
+      team1ID: teamA.id,
+      team2ID: teamB.id,
+      competitionID: compId,
+      groupID: -1,
+      roundID: roundId,
+      date: `${dates[0][0]}-${dates[0][1]}-${dates[0][2]}`,
+      scoreline: null,
+      outcome: null
+    });
+    //second leg
+    fixtures.push({
+      id: -1,
+      team1ID: teamB.id,
+      team2ID: teamA.id,
+      competitionID: compId,
+      groupID: -1,
+      roundID: roundId,
+      date: `${dates[1][0]}-${dates[1][1]}-${dates[1][2]}`,
+      scoreline: null,
+      outcome: null
+    });
+  }
+
+  const retFixtures = fixtures.map((fixture, index) => ({
+    ...fixture,
+    id: index + 1 //assign unique IDs starting from 1
+  }));
+  
+  return retFixtures;
 }

@@ -241,3 +241,27 @@ export function getYearDrawDays(year: number, competitionPeriodicities: Map<numb
 
   return [...finalsDrawDays, ...nationsLeagueDraws, ...qualifiersDraws];
 }
+
+export function getRoundInfoForCompetition(compId: number, competitionType: number, roundId: number) {
+  switch(competitionType) {
+    case 0:
+      return FINALS_JSON.competitions[compId.toString()].rounds[roundId - 1];
+    case 1:
+      for(let i = 0; i < QUAL_JSON.competitions[compId.toString()].rounds.length; i++) {
+        if(QUAL_JSON.competitions[compId.toString()].rounds[i].startingRoundId === roundId) {
+          return QUAL_JSON.competitions[compId.toString()].rounds[i];
+        }
+      }
+      return {};
+    case 2:
+      const numGroupRounds = NL_JSON.competitions[compId.toString()].divisions.length;
+      if(roundId <= numGroupRounds) {
+        return NL_JSON.competitions[compId.toString()].divisions[roundId - 1];
+      } else {
+        const newIdx = roundId - numGroupRounds - 1;
+        return NL_JSON.competitions[compId.toString()].knockoutRounds[newIdx];
+      }
+    default:
+      return {};
+  }
+}
