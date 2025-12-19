@@ -1,7 +1,7 @@
 {
-  "relativeYear": 2026,
   "competitions": {
     "7": {
+      "relativeYear": 2026,
       "divisions": [
         {
           "divisionName": "League A",
@@ -82,6 +82,7 @@
       "knockoutWindow": [3, 2027]
     },
     "8": {
+      "relativeYear": 2026,
       "divisions": [
         {
           "divisionName": "League A",

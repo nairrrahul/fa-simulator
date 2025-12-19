@@ -65,6 +65,7 @@ export interface NationsLeagueKnockout {
 }
 
 export interface NationsLeagueCompetitionStruct {
+  relativeYear: number;
   divisions: NationsLeagueDivision[];
   knockoutRounds: NationsLeagueKnockout[];
   drawYear: number;
@@ -78,14 +79,12 @@ export interface NationsLeagueCompetitionStruct {
 }
 
 export interface NationsLeagueJSON {
-  relativeYear: number;
   competitions: Record<string, NationsLeagueCompetitionStruct>;
 }
 
 //---qualifiers---
 
 export interface QualifyingStageJSON {
-  relativeYear: number;
   competitions: Record<string, QualifyingStageStruct>;
 }
 
@@ -93,6 +92,7 @@ export interface QualifyingStageJSON {
 export interface QualifyingStageStruct {
   hostAutoQual: boolean
   fifaMemberRequired: boolean;
+  relativeYear: number;
   rounds: QualsStageOptions[];
 }
 

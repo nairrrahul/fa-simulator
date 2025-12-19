@@ -1,7 +1,7 @@
 {
-  "relativeYear": 2026,
   "competitions": {
     "9": {
+      "relativeYear": 2027,
       "hostAutoQual": true,
       "fifaMemberRequired": true,
       "rounds": [
@@ -108,6 +108,7 @@
     "10": {
       "hostAutoQual": true,
       "fifaMemberRequired": true,
+      "relativeYear": 2027,
       "rounds": [
         {
           "startingRoundId": 1,
@@ -163,6 +164,7 @@
       ]
     },
     "11": {
+      "relativeYear": 2029,
       "hostAutoQual": true,
       "fifaMemberRequired": true,
       "rounds": [
@@ -220,6 +222,7 @@
       ]
     },
     "12": {
+      "relativeYear": 2027,
       "hostAutoQual": true,
       "fifaMemberRequired": true,
       "rounds": [
@@ -305,6 +308,7 @@
     "13": {
       "hostAutoQual": true,
       "fifaMemberRequired": true,
+      "relativeYear": 2027,
       "rounds": [
         {
           "startingRoundId": 1,
@@ -347,6 +351,7 @@
     "14": {
       "hostAutoQual": true,
       "fifaMemberRequired": true,
+      "relativeYear": 2028,
       "rounds": [
         {
           "startingRoundId": 1,
@@ -430,6 +435,7 @@
     "15": {
       "hostAutoQual": true,
       "fifaMemberRequired": true,
+      "relativeYear": 2030,
       "rounds": [
         {
           "startingRoundId": 1,
@@ -456,6 +462,7 @@
     "16": {
       "hostAutoQual": true,
       "fifaMemberRequired": false,
+      "relativeYear": 2027,
       "rounds": [
         {
           "startingRoundId": 1,
@@ -488,6 +495,7 @@
     "17": {
       "hostAutoQual": true,
       "fifaMemberRequired": false,
+      "relativeYear": 2027,
       "rounds": [
         {
           "startingRoundId": 1,
@@ -540,6 +548,7 @@
     "18": {
       "hostAutoQual": true,
       "fifaMemberRequired": false,
+      "relativeYear": 2028,
       "rounds": [
         {
           "startingRoundId": 1,
@@ -592,6 +601,7 @@
     "19": {
       "hostAutoQual": false,
       "fifaMemberRequired": false,
+      "relativeYear": 2027,
       "rounds": [
         {
           "startingRoundId": 1,
@@ -618,6 +628,7 @@
     "20": {
       "hostAutoQual": false,
       "fifaMemberRequired": false,
+      "relativeYear": 2028,
       "rounds": [
         {
           "startingRoundId": 1,

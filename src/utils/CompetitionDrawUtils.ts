@@ -5,13 +5,15 @@ import finalsCompInfo from '../data/competitions/final_competitions.json'  with 
 import nlCompInfo from '../data/competitions/nations_league.json'  with { type: 'json' };
 import qualifiersCompInfo from '../data/competitions/qualifying_competitions.json'  with { type: 'json' };
 import windowDates from '../data/competitions/confederation_windows.json'  with { type: 'json' };
-import { FinalsCompetitionJSON, HomeAwayQualsRound, NationsLeagueJSON, QualifyingStageJSON } from "../common/competitions.interfaces";
+import optionalWindowDates from '../data/competitions/optional_windows.json'  with { type: 'json' };
+import { FinalsCompetitionJSON, GroupStageQualsRound, HomeAwayQualsRound, NationsLeagueJSON, QualifyingStageJSON } from "../common/competitions.interfaces";
 import { getRoundInfoForCompetition } from "./CompetitionFormatUtils";
 
 const FINALS_JSON = finalsCompInfo as FinalsCompetitionJSON;
 const NL_JSON = nlCompInfo as NationsLeagueJSON;
 const QUAL_JSON = qualifiersCompInfo as QualifyingStageJSON;
 const WINDOW_DATES = windowDates as Record<string, Record<string, number[]>>;
+const OPTIONAL_WINDOWS = optionalWindowDates as Record<string, Record<string, number>>;
 
 //in continental competitions, we generate pots based on world ranking
 //however, we need to ensure that hosts are always in pot 1
@@ -26,15 +28,51 @@ export function generateContinentalPots(hosts: Nation[], qualifierTeams: Nation[
 //for continental competitions, we do not need to worry about confederation requirements
 export function generateContinentalGroups(pots: Nation[][]): Record<number, Nation[]> {
   //number of groups is equal to number of teams in pot 1 
-  const numGroups = pots[0].length;
+  const numPots = pots.length;
   const groups: Record<number, Nation[]> = {};
-  for(let i = 0; i < numGroups; i++) {
+  for(let i = 0; i < numPots; i++) {
     let potsRandOrder = shuffleArray(pots[i]);
     for(let j = 0; j < potsRandOrder.length; j++) {
-      if(!(i in groups)){
-        groups[i] = [potsRandOrder[j]];
+      if(!(j in groups)){
+        groups[j] = [potsRandOrder[j]];
       } else {
-        groups[i].push(potsRandOrder[j]);
+        groups[j].push(potsRandOrder[j]);
+      }
+    }
+  }
+  return groups;
+}
+
+//for UEFA, we need to take a slightly less generalized approach, where teams in the NL playoffs cannot be in 5-team groups.
+export function generateUEFAQualGroups(pots:Nation[][], nlTeams: Nation[]): Record<number, Nation[]> {
+  //number of groups is equal to number of teams in pot 1 
+  const numPots = pots.length;
+  const totalGroups = new Set([...Array(pots[0].length)].map((_, i) => i + 1));
+  const nlTeamGroupIDs = new Set();
+  const groups: Record<number, Nation[]> = {};
+  let finalPotAddGroups: number[] = [];
+  for(let i = 0; i < numPots; i++) {
+    let potsRandOrder = shuffleArray(pots[i]);
+    if(i == numPots - 1) {
+      finalPotAddGroups = [...totalGroups];
+    }
+
+    for(let j = 0; j < potsRandOrder.length; j++) {
+
+      if(!(i in groups)){
+        groups[j] = [potsRandOrder[j]];
+      } else {
+        //we want to check that we're not putting our bottom pot teams in groups with NL teams in them
+        if(i == numPots - 1)
+          groups[finalPotAddGroups[j]].push(potsRandOrder[j]);
+        else
+          groups[j].push(potsRandOrder[j]);
+      }
+
+      //nl teams will always be in pot ID == 1
+      if(nlTeams.includes(potsRandOrder[j])) {
+        nlTeamGroupIDs.add(j);
+        totalGroups.delete(j);
       }
     }
   }
@@ -129,4 +167,17 @@ export function generateHomeAwayFixtures(pairs: [Nation, Nation][], compId: numb
   }));
 
   return retFixtures;
+}
+
+export function getQNLGroupWindows(teamsInGroup: number, compId: number, compType: number, roundId: number, year: number): number[][] {
+  const roundInfo = getRoundInfoForCompetition(compId, teamsInGroup, roundId) as GroupStageQualsRound;
+  const relativeYear = compType == 1 ? QUAL_JSON[compId.toString()].relativeYear : NL_JSON[compId.toString()].relativeYear;
+  const indexToAccess = OPTIONAL_WINDOWS[compId.toString()][teamsInGroup.toString()];
+  const mandatoryWindows = roundInfo.mandatoryWindows;
+  const optionalWindowsToAdd = roundInfo.optionalWindows.slice(0, indexToAccess+1);
+  const windows: number[][] = [...mandatoryWindows, ...optionalWindowsToAdd];
+  //for each window in windows, we need to change the year to be the proper year for the fixture.
+  //the way we do this is by seeing 
+  const retWindows = windows.map(window => [window[0], window[1] + (year - relativeYear)]);
+  return retWindows;
 }
