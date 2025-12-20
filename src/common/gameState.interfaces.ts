@@ -123,3 +123,29 @@ export interface NLDivisionData {
   teams: number[];
   pots: Map<number, number[]>;
 }
+
+/// ----- player info ------
+
+export interface Player {
+  id: number;
+  firstName: string;
+  lastName: string;
+  birthDate: string;
+  primaryNationality: number;
+  secondaryNationality: number | null;
+  playerStatus: number;
+  primaryPosition: number;
+  secondaryPosition: number;
+  overall: number;
+  potential: number;
+  developmentType: number;
+  isRegen: boolean;
+  isDeclared: boolean;
+  isActive: boolean;
+  developmentPhase: number;
+}
+
+export interface PlayerCards {
+  playerId: number;
+  numCurrentCards: number;
+}
