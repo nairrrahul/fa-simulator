@@ -7,7 +7,7 @@ import qualifiersCompInfo from '../data/competitions/qualifying_competitions.jso
 import windowDates from '../data/competitions/confederation_windows.json'  with { type: 'json' };
 import optionalWindowDates from '../data/competitions/optional_windows.json'  with { type: 'json' };
 import { FinalsCompetitionJSON, GroupStageQualsRound, HomeAwayQualsRound, NationsLeagueCompetitionStruct, NationsLeagueJSON, QualifyingStageJSON } from "../common/competitions.interfaces";
-import { getRoundInfoForCompetition } from "./CompetitionFormatUtils";
+import { getRelativeYearForCompetition, getRoundInfoForCompetition } from "./CompetitionFormatUtils";
 
 const FINALS_JSON = finalsCompInfo as FinalsCompetitionJSON;
 const NL_JSON = nlCompInfo as NationsLeagueJSON;
@@ -43,7 +43,7 @@ export function generateContinentalGroups(pots: Nation[][]): Record<number, Nati
   return groups;
 }
 
-//for UEFA, we need to take a slightly less generalized approach, where teams in the NL playoffs cannot be in 5-team groups.
+//for UEFA wcq, we need to take a slightly less generalized approach, where teams in the NL playoffs cannot be in 5-team/6-team groups.
 export function generateUEFAQualGroups(pots:Nation[][], nlTeams: Nation[]): Record<number, Nation[]> {
   //number of groups is equal to number of teams in pot 1 
   const numPots = pots.length;
@@ -173,7 +173,7 @@ export function getQNLGroupWindows(teamsInGroup: number, compId: number, compTyp
   if(compType == 1) {
     const roundInfo = getRoundInfoForCompetition(compId, teamsInGroup, roundId) as GroupStageQualsRound;
     const relativeYear = QUAL_JSON[compId.toString()].relativeYear;
-    const indexToAccess = OPTIONAL_WINDOWS[compId.toString()][teamsInGroup.toString()];
+    const indexToAccess = roundInfo.optionalWindows.length > 0 ? OPTIONAL_WINDOWS[compId.toString()][teamsInGroup.toString()] : -1;
     const mandatoryWindows = roundInfo.mandatoryWindows;
     const optionalWindowsToAdd = roundInfo.optionalWindows.slice(0, indexToAccess+1);
     const windows: number[][] = [...mandatoryWindows, ...optionalWindowsToAdd];
@@ -244,6 +244,57 @@ export function generateGroupFixtures(group: CompetitionGroup[], compId: number,
   return retFixtures;
 }
 
-export function assignDatesToQNLGroupFixtures(fixtures: Fixture[], compType: number, year: number): Fixture[] {
-  return fixtures;
+export function swapEUROQUALFixtures(fixtures: Record<number, Fixture[]>, nlTeamId: number): Record<number,Fixture[]> {
+  //for euros fixtures, we need to ensure that fixtures with the last NL team 
+  //we go through fixtures and figure out which matchdays have nlTeamID in them, and which don't
+  //if there are none which don't...well...that shouldn't happen so just return param
+  const retFixtures: Record<number,Fixture[]> = fixtures;
+  const nlTeamMatchdays: number[] = [];
+  const nonNLteamMatchdays: number[] = [];
+  for(const [matchday, matches] of Object.entries(fixtures)) {
+    const nlTeamFixture = matches.find(fixture => fixture.team1ID == nlTeamId || fixture.team2ID == nlTeamId);
+    if(nlTeamFixture) {
+      nlTeamMatchdays.push(parseInt(matchday));
+    } else {
+      nonNLteamMatchdays.push(parseInt(matchday));
+    }
+  }
+
+  if(nonNLteamMatchdays.length == 0) {
+    return fixtures;
+  }
+
+  //we are guaranteed, based on fixture formation, that only first 2 matchdays need to be sorted out
+  //thus, logically, we only need the first 2 non NL matchdays to swap with as well
+  const swapNLMatchdays = nlTeamMatchdays.filter(matchday => matchday < 3);
+  const swapNonNLMatchdays = nonNLteamMatchdays.slice(0, 2);
+  let ctr = 0;
+  for(const matchday of swapNLMatchdays) {
+    const tempMD = fixtures[matchday];
+    retFixtures[matchday] = retFixtures[swapNonNLMatchdays[ctr]];
+    retFixtures[swapNonNLMatchdays[ctr]] = tempMD;
+    ctr++;
+  }
+  return retFixtures;
+}
+
+export function assignDatesToQNLGroupFixtures(fixtures: Record<number, Fixture[]>, confederationID: number, competitionType: number, year: number, windows: number[][]): Fixture[] {
+
+  const matchdaysExpanded = windows.flatMap(date => [date, date]).map((window, idx) => {
+    return [window[1], window[0], WINDOW_DATES[confederationID.toString()][window[0].toString()][idx % 2]];
+  });
+  const relativeYear = getRelativeYearForCompetition(fixtures[0][0].competitionID, competitionType);
+
+  const retFixtures: Fixture[] = [];
+  let counter = 0;
+  for(const [_, matches] of Object.entries(fixtures)) {
+    const fixturesWithDate = matches.map(match => ({
+      ...match,
+      date: `${year + (matchdaysExpanded[counter][0] - relativeYear)}-${matchdaysExpanded[counter][1]}-${matchdaysExpanded[counter][2]}`
+    }));
+    retFixtures.push(...fixturesWithDate);
+    counter++;
+  }
+
+  return retFixtures;
 }

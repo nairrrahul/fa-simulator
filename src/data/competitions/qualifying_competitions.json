@@ -196,8 +196,8 @@
           "drawDate": 8,
           "drawMonth": 12,
           "drawYear": 2028,
-          "mandatoryWindows": [[6, 2029], [9, 2029], [10, 2029], [11, 2029]],
-          "optionalWindows": [[3, 2029]]
+          "mandatoryWindows": [[9, 2029], [10, 2029], [11, 2029]],
+          "optionalWindows": [[3, 2029], [6, 2029]]
         },
         {
           "startingRoundId": 2,
@@ -269,7 +269,7 @@
           "drawDate": 18,
           "drawMonth": 10,
           "drawYear": 2027,
-          "mandatoryWindows": [[11, 2027], [3, 2028]],
+          "mandatoryWindows": [[11, 2027], [3, 2028], [6, 2028]],
           "optionalWindows": []
         },
         {
@@ -343,8 +343,8 @@
           "drawDate": 8,
           "drawMonth": 8,
           "drawYear": 2027,
-          "mandatoryWindows": [[9, 2027], [10, 2027], [11, 2027], [9, 2028], [10, 2028], [11, 2028]],
-          "optionalWindows": [[3, 2029], [9, 2029], [10, 2029]]
+          "mandatoryWindows": [[9, 2027], [10, 2027], [11, 2027], [9, 2028], [10, 2028], [11, 2028], [3, 2029]],
+          "optionalWindows": [[9, 2029], [10, 2029]]
         }
       ]
     },
@@ -487,8 +487,8 @@
           "drawDate": 3,
           "drawMonth": 8,
           "drawYear": 2026,
-          "mandatoryWindows": [[9, 2026], [10, 2026]],
-          "optionalWindows": [[11, 2026]]
+          "mandatoryWindows": [[9, 2026], [10, 2026], [11, 2026]],
+          "optionalWindows": []
         }
       ]
     },
@@ -573,8 +573,8 @@
           "drawDate": 15,
           "drawMonth": 12,
           "drawYear": 2026,
-          "mandatoryWindows": [[6, 2027], [9, 2027], [10, 2027], [11, 2027]],
-          "optionalWindows": [[3, 2027]]
+          "mandatoryWindows": [[3, 2027],[6, 2027], [9, 2027], [10, 2027], [11, 2027]],
+          "optionalWindows": []
         },
         {
           "startingRoundId": 2,
@@ -653,8 +653,8 @@
           "drawDate": 9,
           "drawMonth": 8,
           "drawYear": 2027,
-          "mandatoryWindows": [[9, 2027], [10, 2027]],
-          "optionalWindows": [[11, 2027]]
+          "mandatoryWindows": [[9, 2027], [10, 2027], [11, 2027]],
+          "optionalWindows": []
         }
       ]
     }

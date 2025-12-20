@@ -265,3 +265,16 @@ export function getRoundInfoForCompetition(compId: number, competitionType: numb
       return {};
   }
 }
+
+export function getRelativeYearForCompetition(compId: number, competitionType: number) {
+  switch(competitionType) {
+    case 0:
+      return FINALS_JSON.competitions[compId.toString()].drawYear;
+    case 1:
+      return QUAL_JSON.competitions[compId.toString()].relativeYear;
+    case 2:
+      return NL_JSON.competitions[compId.toString()].relativeYear;
+    default:
+      return 2026;
+  } 
+}
