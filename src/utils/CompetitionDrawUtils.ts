@@ -25,7 +25,7 @@ export function generateContinentalPots(hosts: Nation[], qualifierTeams: Nation[
   return pots;
 }
 
-//for continental competitions, we do not need to worry about confederation requirements
+//for continental competitions (quals + finals), we do not need to worry about confederation requirements
 export function generateContinentalGroups(pots: Nation[][]): Record<number, Nation[]> {
   //number of groups is equal to number of teams in pot 1 
   const numPots = pots.length;
@@ -115,7 +115,6 @@ export function generateHomeAwayPairs(teams: Nation[]): [Nation, Nation][] {
   return pairs;
 
 }
-
 
 export function generateHomeAwayFixtures(pairs: [Nation, Nation][], compId: number, year: number, roundId: number): Fixture[] {
   const fixtures: Fixture[] = [];
@@ -297,4 +296,63 @@ export function assignDatesToQNLGroupFixtures(fixtures: Record<number, Fixture[]
   }
 
   return retFixtures;
+}
+
+//this function will only be called AFTER getCompetitionGroupStandings() has been called on the
+//relevant groups, meaning that they are pre-sorted
+//in this instance, we are returning all the 1st positions from each group, then 2nd positions, etc.
+//within all first positions, we sort by pts then GD then goals for
+export function getFinalGroupRankingsOrdered(groups: CompetitionGroup[]): number[] {
+  if (!groups || groups.length === 0) {
+    return [];
+  }
+
+  const groupsByGroupId = new Map<number, CompetitionGroup[]>();
+  for (const team of groups) {
+    if (!groupsByGroupId.has(team.groupID)) {
+      groupsByGroupId.set(team.groupID, []);
+    }
+    groupsByGroupId.get(team.groupID)!.push(team);
+  }
+
+  const teamsByRank = new Map<number, CompetitionGroup[]>();
+  groupsByGroupId.forEach((singleSortedGroup) => {
+    singleSortedGroup.forEach((team, index) => {
+      const rank = index;
+      if (!teamsByRank.has(rank)) {
+        teamsByRank.set(rank, []);
+      }
+      teamsByRank.get(rank)!.push(team);
+    });
+  });
+
+  const finalRankings: number[] = [];
+
+  const sortedRanks = Array.from(teamsByRank.keys()).sort((a, b) => a - b);
+
+  for (const rank of sortedRanks) {
+    const teamsInRank = teamsByRank.get(rank)!;
+
+    teamsInRank.sort((a, b) => {
+      const pointsA = a.wins * 3 + a.draws;
+      const pointsB = b.wins * 3 + b.draws;
+      if (pointsA !== pointsB) {
+        return pointsB - pointsA;
+      }
+
+      const gdA = a.goalsFor - a.goalsAgainst;
+      const gdB = b.goalsFor - b.goalsAgainst;
+      if (gdA !== gdB) {
+        return gdB - gdA;
+      }
+
+      return b.goalsFor - a.goalsFor;
+    });
+
+    for (const team of teamsInRank) {
+      finalRankings.push(team.teamID);
+    }
+  }
+
+  return finalRankings;
 }
